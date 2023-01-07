@@ -77,8 +77,7 @@ Some of the examples of this system are:
 
 ### Step 3 (Design)
 
-<ul>
-  <li> Initial Design </li>
-</ul>
+<b>Initial Design </b>
+![Tiny URL Design 1](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Tiny%20URL/images/Tiny%20URL%20Design%201.png?token=GHSAT0AAAAAAB47WKSPZN2JW4LKVH3KEMPGY5ZCATA)
 
 
