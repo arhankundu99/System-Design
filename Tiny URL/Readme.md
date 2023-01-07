@@ -78,12 +78,12 @@ Some of the examples of this system are:
 ### Step 3 (Design)
 
 <b>Design Iteration 1</b>
-![Tiny URL Design Iteration 1](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Tiny%20URL/images/Tiny%20URL%20Design%201.png?token=GHSAT0AAAAAAB47WKSODLUF3TUCWZ4KHPKQY5ZCNFA)
+![Tiny URL Design Iteration 1](https://github.com/arhankundu99/System-Design/blob/main/Tiny%20URL/images/Tiny%20URL%20Design%201.png)
 
 Note that there will be multiple instances of the short url service and the database.
 
 <b> Design Iteration 2 </b>
-![Tiny URL Design Iteration 2](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Tiny%20URL/images/Tiny%20URL%20Design%20Iteration%202.png?token=GHSAT0AAAAAAB47WKSPUGHDCT5WQ54U4WF6Y5ZCMKA)
+![Tiny URL Design Iteration 2](https://github.com/arhankundu99/System-Design/blob/main/Tiny%20URL/images/Tiny%20URL%20Design%20Iteration%202.png)
 
 <b> Now how do we generate the unique short url? </b>
 We have to make sure that the instances of the short url service do not generate the same short url (Collisions should not happen).
@@ -94,5 +94,5 @@ So what we need is a predictable way to generate a short url knowing that there 
 
 One very simple way to implement this is to use ONE of the features of Redis (Which is a cache system) which returns an unique number whenever a request for unique number comes to redis. Redis is basically an in memory store used to cache the data in key, value pairs.
 
-![Tiny URL Design Iteration 3](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Tiny%20URL/images/Tiny%20URL%20Design%20Iteration%203.png?token=GHSAT0AAAAAAB47WKSPGGWQUIQJ7GMMTGL4Y5ZDVZQ)
+![Tiny URL Design Iteration 3](https://github.com/arhankundu99/System-Design/blob/main/Tiny%20URL/images/Tiny%20URL%20Design%20Iteration%203.png)
 
