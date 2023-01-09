@@ -107,3 +107,36 @@ And with any blob storage solutions, we have to use <b>CDN</b> which stands for 
 <b>What is a CDN?</b>
 CDN stands for Content Delivery Network. CDN is basically a group of servers distributed across the globe which helps in faster delivery of content to the user. 
 
+![CDN](https://github.com/arhankundu99/System-Design/blob/main/Database/images/CDN.png)
+
+How does CDN delivers content faster? CDN Basically caches content from the origin server and whenever a request comes, a nearby server sends the appropiate responses. CDN also compresses images or videos so that the content can be sent faster.
+
+Refer the following links:
+<ul>
+  <li>
+    https://www.cloudflare.com/learning/cdn/what-is-a-cdn/
+  </li>
+  <li>
+    https://www.cloudflare.com/learning/cdn/caching-static-and-dynamic-content/
+  </li>
+</ul>
+
+## Search Solutions
+These solutions are used to provide <b>text searching capabilities with fuzzy search</b>. Common use case would the search bar of google, amazon, netflix etc.
+For eg., if a seller uploads a product on amazon, the system should provide the searching capability for that product so that the users can search for it. 
+Or if an user types a crew name, or a genre, then the movies with the given crew name or the genre should be searched and displayed.
+
+If we want to build search engines, Elastic Search can be our first choice.
+
+Common solutions are:
+<ul>
+  <li>
+    Elastic Search
+  </li>
+  <li>
+    Solr
+  </li>
+</ul>
+Both of these solutions are built on <b>Apache Lucene</b>.
+
+These are basically NoSQL Databases which store data in json document. These solutions also provide <b>fuzzy search</b> feature. For eg., If an user types a wrong spelled word, the system should show the results of the corrected word.
