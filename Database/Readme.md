@@ -142,3 +142,107 @@ Both of these solutions are built on <b>Apache Lucene</b>.
 These are basically NoSQL Databases which store data in json document. These solutions also provide <b>fuzzy search</b> feature. For eg., If an user types a wrong spelled word, the system should show the results of the corrected word.
 
 Although Elasticsearch is a NoSQL database, it is <b>NOT RECOMMENDED TO USE AS A PRIMARY DATABASE</b>. Some operations like inserting values are more expensive to perform than other databases.
+
+## SQL Databases
+SQL stands for <b>Structured Query Language</b>. SQL Databases are called <b>Relational Database Management System (RDBMS)</b>. 
+<br></br>
+In Relational Database management systems, data is stored in the form of tables. Each row is uniquely identified by a primary key and each row can also have a foreign key (which is a primary key in another table). <b>Through the foreign key, a relation is formed between two tables, Hence it is called relational databases</b>.
+
+![RDBMS Example Image](https://github.com/arhankundu99/System-Design/blob/main/Database/images/rdbms%20image%201.png)
+
+## NoSQL Databases
+NoSQL is know as <b>"No SQL" (which means it cannot support sql)</b> and sometimes called as <b>"Not Only SQL"</b> (When the database can support SQL queries)
+
+There are four kinds of NoSQL databases:
+<ul>
+  <li>
+    Document (Mongo, Firestore)
+  </li>
+  <li>
+    Graph (Neo4j)
+  </li>
+  <li>
+    Key-value (Redis)
+  </li>
+  <li>
+    Wide-column (Cassandra, HBase)
+  </li>
+</ul>
+
+## How does SQL databases work?
+
+SQL Databases follow <b>ACID</b> properties. ACID stands for
+<ul>
+  <li>
+    <b>Atomicity</b>: <b>Either all the transactions in the commit call will be successful or no transaction will be successful</b>. A very common example is sending some money to a friend. Here 2 transactions take place. One is debiting from your account and the other is crediting into your friend account. Both the transactions should either be successful or not successful. It should not happen that one transaction is successful and the other is not successful. If a person A is transferring X amount to person B, then the following steps will take place.
+    <ol>
+      <li>
+        <b>Transaction 1:</b> Debit X from A
+      </li>
+      <li>
+        <b>Transaction 2:</b> Credit X to B
+      </li>
+      <li>
+        <b>Commit the above transactions</b> (After commit call, the changes take place in the database)
+      </li>
+    </ol>
+  </li>
+  
+  <li>
+    <b>Consistency</b>: Consistency ensures that the data is consistent before and after the transactions. For example, Person A has balance Z in his account and he transfers X amount to Person B. Then after the transaction and if the transaction is successful, the Person A's balance should be Z - X and person B's balance should increase by X. The data in the database should be consistent.
+  </li>
+  
+  <li>
+    <b>Isolation</b>: Isolation ensures that if a transaction is occuring on some rows, then the rows are locked by the database and other transactions which would occur on these rows will have to wait for the rows to unlock. This ensures that no invalid transaction takes place. For eg., Let's say a person has 500 rs in his account. And he did 2 withdrawal requests for 300rs and 500rs. Because of the isolation property, when the transation for 300rs is taking place, then the row will be locked, that means the transaction of 500rs will not happen at that time. And when the transaction of 300rs finishes, the amount left is 200rs and this transaction fails. Without isolation, the two transactions may occur concurrently and the row would have inconsistent values then.
+  </li>
+  
+  <li>
+    <b>Durability</b>: Durability ensures that all the data in the database is written in disk. So that in case the database gets destroyed or restarted, the data can be recovered from the disk.
+  </li>
+</ul>
+
+SQL Databases are <b>VERTICALLY SCALABLE</b>. That means there is just one server and to increase the number of requests it can handle, we can add more cpu, ram, ssd in it.
+
+![Vertical Scaling](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Vertical%20Scaling.png)
+
+#### Advantages of vertical scaling
+<ul>
+  <li>
+    Easy to implement.
+  </li>
+  <li>
+    Consumes less power.
+  </li>
+</ul>
+
+#### Downsides of vertical scaling
+<ul>
+  <li>
+    There is a limit to the amount we can upgrade.
+  </li>
+  <li>
+    Single point of failure because there is just one server
+  </li>
+  <li>
+    Limited Scaling
+  </li>
+</ul>
+
+#### Can SQL Databases be horizontally scalable (ie become distributed database)?
+Distributed database is basically a collection of interconnected databases which are spread across various locations.
+
+![Distributed Database](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Distributed%20Database.jpg)
+
+With distributed database, people can access the database nearer to them which would result in faster access to the data. 
+
+Let's say we have several SQL databases set up across the world. The following things would happen:
+<ul>
+  <li>
+    An update query comes to the nearest database. Then to provide <b>isolation</b>, the database would have to lock its own row(s) and the row(s) of all the connected databases. And let's say another same update query comes in a database in some other location. Then that database would try to lock it's own row and the rows of all the connected databases. This may lead to <b>Data Race</b>.
+  </li>
+  <li>
+    Let's say the update is successful, then the database would have to update the rows of all the other databases. And In during that time, the data in other databases would remain <b>inconsistent</b>.
+  </li>
+</ul>
+
+So its possible to make SQL Databases distributed, but some of the ACID properties would be lost.
