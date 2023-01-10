@@ -140,3 +140,5 @@ Common solutions are:
 Both of these solutions are built on <b>Apache Lucene</b>.
 
 These are basically NoSQL Databases which store data in json document. These solutions also provide <b>fuzzy search</b> feature. For eg., If an user types a wrong spelled word, the system should show the results of the corrected word.
+
+Although Elasticsearch is a NoSQL database, it is <b>NOT RECOMMENDED TO USE AS A PRIMARY DATABASE</b>. Some operations like inserting values are more expensive to perform than other databases.
