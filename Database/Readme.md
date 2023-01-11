@@ -228,12 +228,38 @@ SQL Databases are <b>VERTICALLY SCALABLE</b>. That means there is just one serve
   </li>
 </ul>
 
-#### Can SQL Databases be horizontally scalable (ie become distributed database)?
+#### Replication (Horizontal scaling technique)
+Replication is a <b>horizontal scaling technique</b> which is basically making exact copies of the database and storing them in different database servers.
+
+![Replication](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Replication.png)
+
+<b>Advantages</b>
+<ul>
+  <li>
+    Increases Availibility (Since there are many database servers containing the same data)
+  </li>
+  <li>
+    Increases read performance
+  </li>
+</ul>
+
+<b>Disadvantages</b>
+<ul>
+  <li>
+    Complexity increases when we have write operations since the write has to be copied in all the database servers.
+  </li>
+</ul>
+
+<b>When to use</b>
+So if our data is primarily read focussed, then we can use this database. 
+
+
+#### Can we design SQL Databases to be replicable and become distributed database?
 Distributed database is basically a collection of interconnected databases which are spread across various locations.
 
 ![Distributed Database](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Distributed%20Database.jpg)
 
-With distributed database, people can access the database nearer to them which would result in faster access to the data. 
+With <b>distributed database with replication</b>, people can access the database nearer to them which would result in faster access to the data. 
 
 Let's say we have several SQL databases set up across the world. The following things would happen:
 <ul>
@@ -246,3 +272,106 @@ Let's say we have several SQL databases set up across the world. The following t
 </ul>
 
 So its possible to make SQL Databases distributed, but some of the ACID properties would be lost.
+
+### Sharding (Horizontal scaling technique)
+Database sharding is basically <b>splitting our database into multiple chunks which are called shards</b> and storing them in several database servers. 
+<br></br>
+<b>NOTE that sql databases like MySQL, Oracle, PostgreSQL do not support automatic sharding and we have to write manual logic for sharding</b>
+
+![Database Sharding](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Database%20sharding.png)
+
+<b>Advantages of database sharding</b>
+
+<ul>
+  <li>
+    <b>Improve Response Time</b>: Data retrieval takes longer on a single database. The database management system needs to search through many rows to get the data. So if we split our data into smaller chunks (shards), then the data retrieval would be much faster (Given that the system knows which shard to look into for the given transaction)
+  </li>
+  <li>
+    <b>No single point of failure</b>: If we shard the database, then the shards are distributed on different database servers. So if one of the shard fails, the other shards would still work and data would be restored from an alternate shard.
+  </li>
+  <li>
+    <b>Scale</b>: We can scale our database with sharding. We can add more shards when the data increases. 
+  </li>
+</ul>
+
+<b>Disadvantages of database sharding</b>
+<ul>
+  <li>
+    We have to write a service which knows the database shard to route the transaction.
+  </li>
+</ul>
+
+#### Sharding techniques
+<ul>
+  <li>
+    <b>Range Based Sharding:</b> In this technique, we assign a <b>pre-defined range</b> to each shard. 
+    <img src = "https://github.com/arhankundu99/System-Design/blob/main/Database/images/Range%20Based%20Sharding%201.png"></img>
+    <br></br>
+    So when a query hits the load balancer for database, it will check the shard id and then it will redirect to that shard. Notice that a query can require data from multiple shards as well. So selecting the <b>Shard Key</b> becomes very important for performance. We have to select shard keys in such a way that for our queries, we should look into minimum required shards.
+  </li>
+  <li>
+  <b>Hashed Sharding:</b> In this technique, the record is taken as an input and then a hash value is generated. Based on that hash value, the record is allocated a shard.
+  A simple hash function would be <b>Hash Value = ID % number of shards </b>. 
+  
+  <b>Advantages of hashed sharding </b>
+  <ul>
+    <li>
+      In Hashed Sharding, no look up table for allocating the shard (as in range based sharding) needs to be maintained (Shard key does not need to be maintained)
+    </li>
+  </ul>
+  
+  <b>Disadvantages of hashed sharding </b>
+  <ul>
+    <li>
+      In Hashed Sharding, query operations would be much complex because the records are much more distributed.
+    </li>
+    <li>
+      Resharding can be expensive. For the above hash function, if we increase the number of shards, then we would have to rebalance all the shards
+    </li>
+  </ul>
+ 
+  </li>
+  
+  <li>
+  <b>Entity / relationship based sharding </b>: In this technique, all the related data is kept in single shard which can reduce the need for looking into multiple shards for a transaction and increase performance.
+  </li>
+  
+  <li>
+  <b>Geography based Sharding</b>: In this technique, all the data belonging to the same location is kept in the same shard.
+  </li>
+</ul>
+
+### Scaling SQL Databases Architechture Example
+
+#### Design 1
+
+![Scaling SQL Database Design 1](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Scaling%20SQL%20Databases%201.png)
+
+<b>NOTE: Proxy is a service which is commonly used for load balancing, caching and security.</b>
+
+<ul>
+  <li>
+    <b>Configuration Service</b> maintains a look up table of the shards and their locations.
+  </li>
+  <li>
+    <b>Cluster Proxy</b> decides which shard to hit for the corresponding query.
+  </li>
+</ul>
+
+#### Improving Design 1
+![Design 1 Improvement](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Scaling%20SQL%20Databases%20Design%201%20Impovement.png)
+
+In this design, we have another proxy called <b>Shard Proxy</b> which is present between the <b>Load Balancer</b> and the <b>shard</b>. 
+<br></br>
+Shard proxy can be used for the following reasons:
+<ul>
+  <li>
+    When a shard becomes large enough, then the shard proxy can be used to break the shard into smaller shards
+  </li>
+  <li>
+    It can be used to cache some frequent queries, monitor database health, terminate queries if the request is taking long and publish metrics about the data.
+  </li>
+</ul>
+
+#### Sacrificing Consistency for availibility
+![Design 1 Improvement (Sacrificing consistency for availibility)](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Scaling%20SQL%20Databases%20Design%201%20Impovement%20(Sacrificing%20Consistency%20for%20availibility).png)
