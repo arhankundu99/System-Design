@@ -421,3 +421,64 @@ Lets say we have two nodes A and B in our distributed database system. Any write
 </ul>
 
 <b>AC</b> (Availibility and Consistency) systems do not exist in reality.
+
+## SQL vs NoSQL Databases
+<table>
+  <tr>
+    <th>SQL Databases</th>
+    <th>NoSQL Database</th>
+  </tr>
+  <tr>
+    <td>
+      SQL Databases are more geared towards consistency.
+    </td>
+    <td>
+      NoSQL Databases are more geared towards availibility.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Fixed Schema.
+    </td>
+    <td>
+      Flexible Schema.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      The data in SQL Databases are <b>NORMALIZED</b> to reduce data redundancies (i.e., the data is split into multiple tables). So inserting a record or retrieving a record is slower than NoSQL Databases.
+    </td>
+    <td>
+      Data is <b>NOT NORMALIZED</b> in NoSQL Databases. All the data is stored in a single record and there could be multiple data duplications. As all the data is stored in a single record, <b>Inserting</b> and <b>retrieving</b> is faster because no join operations are required here.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      As the Data is normalized in SQL Databases, Updates / Deletions are easier because there is no duplication of data.
+    </td>
+    <td>
+      Updates / Deletions are costlier because the data is duplicated in NoSQL Databases.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      SQL Databases are optimized for filtering as the data is normalised.
+    </td>
+    <td>
+      NoSQL Databases are not optimized for filtering as the data is not normalised.
+    </td>
+  </tr>
+</table>
+
+## References:
+<ul>
+  <li>
+    https://betterprogramming.pub/introduction-to-nosql-databases-7f6ed6e055c5
+  </li>
+  <li>
+    https://betterprogramming.pub/scaling-sql-nosql-databases-1121b24506df
+  </li>
+  <li>
+    Codekarle youtube channel
+  </li>
+</ul>
