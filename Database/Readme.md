@@ -375,3 +375,49 @@ Shard proxy can be used for the following reasons:
 
 #### Sacrificing Consistency for availibility
 ![Design 1 Improvement (Sacrificing consistency for availibility)](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Scaling%20SQL%20Databases%20Design%201%20Impovement%20(Sacrificing%20Consistency%20for%20availibility).png)
+
+In this design, we introduce <b>slave shards</b> where the data of master shard is replicated. Here, the following things happen:
+<ul>
+  <li>
+    Write / Read operations are supported by the master shard.
+  </li>
+  <li>
+    Only read operations are supported by slave shards.
+  </li>
+</ul>
+
+This increases the availability since there are multiple shards now for read operations but consistency is lost because it takes time to replicate the data among slave shards. 
+
+## How does NoSQL Databases work?
+NoSQL Databases follow <b>BASE</b> model. <b>BASE</b> stands for:
+<ul>
+  <li>
+    <b>Basic Availability</b>: The database favours availibility of data rather than consistency of data.
+  </li>
+  <li>
+    <b>Soft State</b>: The database does not have to be consistent all the time.
+  </li>
+  <li>
+    <b>Eventual Consistency</b>: The database nodes will be eventually consistent (become consistent after some time).
+  </li>
+</ul>
+
+<b>SQL Databases are more geared towards consistency and NoSQL databases are geared towards scalability and are therefore more fault-tolerant.</b> In other words, when replicas crash, NoSQL databases will still be able to return data, albeit not the most accurate version.
+
+### CAP Theorem
+<b>CAP Theorem</b> states that among <b>Partition tolerance</b>, <b>Availibility</b> and <b>Consistency</b>, A distributed system can have <b>Only two</b> of the three properties.
+
+![CAP Theorem](https://github.com/arhankundu99/System-Design/blob/main/Database/images/CAP%20Theorem.png)
+
+#### Partition tolerance
+Lets say we have two nodes A and B in our distributed database system. Any write in A is replicated in node B and any write in B is replicated in node A. Now, if the connection breaks between node A and node B, there are 2 ways for the database to work:
+<ul>
+  <li>
+    <b>Scarifice Consistency: </b> Here the nodes A and B will continue to work but any write in A will not be replicated in B and vice versa since there is no connection. Therefore there would be inconsistency in the data. So this database would become <b>AP</b> (Partition tolerace and Availibility) system.
+  </li>
+  <li>
+    <b>Scarifice Availibility: </b> Here one of the cluster would be turned off. That means either the cluster with contains node A or node B would be made unavailable. In this system there would be consistency but <b>availibility</b> decreases. So this database would become <b>CP</b> (Consistent and Partition tolerance) system.
+  </li>
+</ul>
+
+<b>AC</b> (Availibility and Consistency) systems do not exist in reality.
