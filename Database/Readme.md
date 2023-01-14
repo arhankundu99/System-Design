@@ -169,6 +169,9 @@ There are four kinds of NoSQL databases:
   </li>
 </ul>
 
+### Difference between Document, Graph, key-value and column databases
+To be written.
+
 ## How does SQL databases work?
 
 SQL Databases follow <b>ACID</b> properties. ACID stands for
@@ -253,6 +256,8 @@ Replication is a <b>horizontal scaling technique</b> which is basically making e
 <b>When to use</b>
 So if our data is primarily read focussed, then we can use this database. 
 
+### Normalization in SQL Databases
+To be written
 
 #### Can we design SQL Databases to be replicable and become distributed database?
 Distributed database is basically a collection of interconnected databases which are spread across various locations.
@@ -404,6 +409,10 @@ NoSQL Databases follow <b>BASE</b> model. <b>BASE</b> stands for:
 
 <b>SQL Databases are more geared towards consistency and NoSQL databases are geared towards scalability and are therefore more fault-tolerant.</b> In other words, when replicas crash, NoSQL databases will still be able to return data, albeit not the most accurate version.
 
+NoSQL Databases are <b>Horizontally scalable</b>. That means to increase scalability, we can just add more database servers.
+
+![Horizontally Scalable](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Horizontal%20Scaling.png)
+
 ### CAP Theorem
 <b>CAP Theorem</b> states that among <b>Partition tolerance</b>, <b>Availibility</b> and <b>Consistency</b>, A distributed system can have <b>Only two</b> of the three properties.
 
@@ -423,6 +432,7 @@ Lets say we have two nodes A and B in our distributed database system. Any write
 <b>AC</b> (Availibility and Consistency) systems do not exist in reality.
 
 ## SQL vs NoSQL Databases
+Some important differences are captured in the below table:
 <table>
   <tr>
     <th>SQL Databases</th>
