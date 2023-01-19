@@ -58,5 +58,5 @@ The first step to solving a system design problem is to note down the functional
 
 </table>
 
-## Design Iteration 1
-![Iteration 1](https://github.com/arhankundu99/System-Design/blob/main/Hotel%20Booking%20System/images/Hotel%20Booking%20Design%20Iteration%201.png)
+## Design
+![Iteration 1](https://github.com/arhankundu99/System-Design/blob/main/Hotel%20Booking%20System/images/Hotel%20Booking%20Design%20Iteration%202.jpeg)
