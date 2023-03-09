@@ -114,6 +114,9 @@ How does CDN delivers content faster? CDN Basically caches content from the orig
 <b>Working of CDN</b>
 ![Working Of CDN](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Database/images/Working%20of%20CDN.png)
 
+
+Setting up S3 with CDN: https://learnetto.com/blog/cloudfront-s3
+
 Refer the following links:
 <ul>
   <li>
