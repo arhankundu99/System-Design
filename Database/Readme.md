@@ -111,6 +111,9 @@ CDN stands for Content Delivery Network. CDN is basically a group of servers dis
 
 How does CDN delivers content faster? CDN Basically caches content from the origin server and whenever a request comes, a nearby server sends the appropiate responses. CDN also compresses images or videos so that the content can be sent faster.
 
+<b>Working of CDN</b>
+![Working Of CDN](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Database/images/Working%20of%20CDN.png)
+
 Refer the following links:
 <ul>
   <li>
