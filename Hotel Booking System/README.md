@@ -1,7 +1,7 @@
 # Hotel Booking System Design
 
 ## Functional and non functional requirements
-The first step to solving a system design problem is to note down the functional and non functional requirements
+The first step to solving a system design problem is to note down the functional and non functional requirements.
 
 <table>
   <tr>
@@ -59,4 +59,6 @@ The first step to solving a system design problem is to note down the functional
 </table>
 
 ## Design
-![Iteration 1](https://github.com/arhankundu99/System-Design/blob/main/Hotel%20Booking%20System/images/Hotel%20Booking%20Design%20Iteration%202.jpeg)
+![Hotel Booking HLD](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Hotel%20Booking%20System/images/Hotel%20Booking%20Design%20HLD.png)
+
+![Schemas and APIs](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Hotel%20Booking%20System/images/Hotel%20Booking%20Design%20APIs%20and%20Schemas.png)
