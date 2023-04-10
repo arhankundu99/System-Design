@@ -112,6 +112,7 @@ CDN stands for Content Delivery Network. CDN is basically a group of servers dis
 How does CDN delivers content faster? CDN Basically caches content from the origin server and whenever a request comes, a nearby server sends the appropiate responses. CDN also compresses images or videos so that the content can be sent faster.
 
 <b>Working of CDN</b>
+
 ![Working Of CDN](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Database/images/Working%20of%20CDN.png)
 
 
@@ -313,10 +314,10 @@ Database sharding is basically <b>splitting our database into multiple chunks wh
 </ul>
 
 #### Sharding techniques
+![Range-Based Sharding](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Range%20Based%20Sharding%201.png)
 <ul>
   <li>
     <b>Range Based Sharding:</b> In this technique, we assign a <b>pre-defined range</b> to each shard. 
-    <img src = "https://github.com/arhankundu99/System-Design/blob/main/Database/images/Range%20Based%20Sharding%201.png"></img>
     <br></br>
     So when a query hits the load balancer for database, it will check the shard id and then it will redirect to that shard. Notice that a query can require data from multiple shards as well. So selecting the <b>Shard Key</b> becomes very important for performance. We have to select shard keys in such a way that for our queries, we should look into minimum required shards.
   </li>
@@ -437,6 +438,20 @@ Lets say we have two nodes A and B in our distributed database system. Any write
 
 <b>AC</b> (Availibility and Consistency) systems do not exist in reality.
 
+### Difference between consistency in ACID and consistency in CAP
+<table>
+  <tr>
+    <td>Consistency in ACID</td>
+    <td>Consistency in CAP</td>
+  </tr>
+  
+  <tr>
+    <td>Consistency in ACID states that the data in the database would be consistent before and after the transaction (Even if the transaction fails, the changes would be rolled back and the database would be in the same state as it was before the transaction)</td>
+    <td>Consistency in CAP states that the data in the nodes will eventually become consistent.</td>
+  </tr>
+  
+</table>
+
 ## SQL vs NoSQL Databases
 Some important differences are captured in the below table:
 <table>
@@ -484,6 +499,35 @@ Some important differences are captured in the below table:
       NoSQL Databases are not optimized for filtering as the data is not normalised.
     </td>
   </tr>
+</table>
+
+
+## MySQL vs SQLite
+<table>
+<tr>
+  <td>
+    MySQL
+  </td>
+  <td>
+    SQLite
+  </td>
+</tr>
+<tr>
+  <td>
+    MySQL is a client-server database system that stores data in separate server process.
+  </td>
+  <td>
+    SQLite is a <b>file based database system</b> which stores data in a single file. SQLite does not require servers.
+  </td>
+</tr>
+<tr>
+  <td>
+    MySQL is designed to handle many requests, can scale well and can handle concurrent requests.
+  </td>
+  <td>
+    SQLite is suitable for small scale applications. It can't handle concurrent requests. In SQLite, locking occurs at the database level, not the table level. This means that when one client is writing to any table in an SQLite database, all other clients must wait until the write is completed before they can access any table in the database. (if a write request comes and then a read request comes before the write request is complete, the read operation will not be blocked by the write operation, but it will only see the data that was available at the time when the read request was processed.)
+  </td>
+</tr>    
 </table>
 
 ## References:
