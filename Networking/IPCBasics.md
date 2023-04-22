@@ -209,7 +209,136 @@ It's important to ensure that all processes that use a message queue properly cl
 ## Sockets
 Sockets are a <b>communication endpoint</b> for sending and receiving data over a network. They provide a means for processes running on <b>different machines</b> to communicate with each other, enabling interprocess communication (IPC) across a network.
 
+<b>Sockets are identified by an IP address and a port number, which together uniquely identify a particular communication endpoint. Processes can create sockets, bind them to a specific IP address and port number, and then use them to send and receive data to and from other processes using the same IP address and port number.</b>
 
+Server Code:
+```cpp
+#include <iostream>
+#include <unistd.h>
+#include <arpa/inet.h>
+
+int main() {
+    int sockfd, newsockfd;
+    sockaddr_in serv_addr, cli_addr;
+    socklen_t clilen;
+    char buffer[256];
+
+    // Create socket
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        std::cerr << "Error opening socket." << std::endl;
+        return 1;
+    }
+
+    // Initialize server address
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = INADDR_ANY;
+    serv_addr.sin_port = htons(12345);
+
+    // Bind socket to server address
+    if (bind(sockfd, (sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
+        std::cerr << "Error binding socket." << std::endl;
+        close(sockfd);
+        return 1;
+    }
+
+    // Listen for incoming connections
+    listen(sockfd, 5);
+    std::cout << "Server listening for connections..." << std::endl;
+
+    clilen = sizeof(cli_addr);
+
+    // Accept incoming connection
+    newsockfd = accept(sockfd, (sockaddr*) &cli_addr, &clilen);
+    if (newsockfd < 0) {
+        std::cerr << "Error accepting connection." << std::endl;
+        close(sockfd);
+        return 1;
+    }
+
+    // Read data from client
+    int n = read(newsockfd, buffer, sizeof(buffer));
+    if (n < 0) {
+        std::cerr << "Error reading from socket." << std::endl;
+        close(newsockfd);
+        close(sockfd);
+        return 1;
+    }
+
+    std::cout << "Received data from client: " << buffer << std::endl;
+
+    // Write data back to client
+    const char* response = "Hello from server!";
+    n = write(newsockfd, response, strlen(response));
+    if (n < 0) {
+        std::cerr << "Error writing to socket." << std::endl;
+        close(newsockfd);
+        close(sockfd);
+        return 1;
+    }
+
+    close(newsockfd);
+    close(sockfd);
+
+    return 0;
+}
+
+```
+
+Client Code:
+```cpp
+#include <iostream>
+#include <unistd.h>
+#include <arpa/inet.h>
+
+int main() {
+    int sockfd;
+    sockaddr_in serv_addr;
+    char buffer[256];
+
+    // Create socket
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        std::cerr << "Error opening socket." << std::endl;
+        return 1;
+    }
+
+    // Initialize server address
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1"); // IP address of the server
+    serv_addr.sin_port = htons(12345); // Port number used by the server
+
+    // Connect to server
+    if (connect(sockfd, (sockaddr*) &serv_addr, sizeof(serv_addr)) < 0) {
+        std::cerr << "Error connecting to server." << std::endl;
+        return 1;
+    }
+
+    // Send data to server
+    const char* message = "Hello from client!";
+    int n = write(sockfd, message, strlen(message));
+    if (n < 0) {
+        std::cerr << "Error writing to socket." << std::endl;
+        close(sockfd);
+        return 1;
+    }
+
+    // Read data from server
+    n = read(sockfd, buffer, sizeof(buffer));
+    if (n < 0) {
+        std::cerr << "Error reading from socket." << std::endl;
+        close(sockfd);
+        return 1;
+    }
+
+    std::cout << "Received data from server: " << buffer << std::endl;
+
+    close(sockfd);
+
+    return 0;
+}
+
+```
 
 
 
