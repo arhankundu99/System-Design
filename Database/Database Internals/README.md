@@ -38,6 +38,7 @@ Examples of row-oriented DBMS are MySQL, PostgreSQL etc., and examples of column
 
 ## Row-Oriented Data Layout
 Here the record is stored in rows.
+
 ![Row Oriented table](images/row%20oriented%20database.png)
 
 Note that Data from the database is accessed block-wise (in pages).
@@ -60,7 +61,7 @@ In the image, we can see that each value is mapped to the ID, which we can avoid
 
 Database systems store data records, consisting of multiple fields, in tables, where each table is usually represented as a <b>separate file</b>.
 
-Each record in the table can be looked up using a search key. To locate a record, database systems use <b>indexes</b>, which are auxiliary data structures that allow it to efficiently locate data records without scanning an entire table to search for a record.
+Each record in the table can be looked up using a search key. To locate a record, database systems use <b>indexes</b>, which are auxiliary data structures that allow it to efficiently locate data records <b>without scanning an entire table to search for a record.</b>
 
 A database system usually seperates <b>data files</b> and <b>index files</b>. Data files store the records and index files store the metadata of records and are used to locate a record efficiently in data files.
 
