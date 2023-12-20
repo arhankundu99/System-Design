@@ -185,7 +185,7 @@ The response data for the request is sent by the server.
 # DNS
 DNS: DNS stands for Domain naming system. The domain names such as mdn.com or espn.com is converted into Internet protocol address so that the request can be sent to the computer with that address. Using DNS, we dont have to remember the IP address to connect to other computer. 
 
-![DNS](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Basics/images/DNS.png)
+![DNS](images/DNS.png)
 
 Authoritative DNS Server: This server contains the map with domain name as key and ip address as value.  
            
@@ -203,8 +203,8 @@ Recursive DNS Server or DNS Resolver: The DNS Resolver is a server designed to r
   
   <li>
     The root server then responds to the resolver with the address of a Top Level Domain (TLD) DNS server (such as .com or .net), which stores the information for its domains. When searching for example.com, our request is pointed toward the .com TLD. 
-  <li>
-    
+  </li>
+
   <li>
     The resolver then makes a request to the .com TLD. 
   </li>
@@ -287,4 +287,4 @@ UDP stands for User Datagram Protocol. It is also known as connectionless protoc
 It is faster than TCP because it does not have to resend the lost packets, or it does not have to keep track of the order of packets. This protocol is used in streaming live videos where low latency is required.
 
 ### TCP vs UDP
-![TCP vs UDP](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Basics/images/TCP%20vs%20UDP.png)
+![TCP vs UDP](images/TCP%20vs%20UDP.png)

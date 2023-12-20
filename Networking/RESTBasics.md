@@ -7,7 +7,7 @@ REST stands for Representational State Transfer. It is an architectural design o
 ### Client-Server: 
 By dividing our software into client and server architecture, we allow them to evolve independently and also this increases the portability 
 
-![](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Basics/images/REST%20Client%20Server.png)
+![](images/REST%20Client%20Server.png)
 
 ### Stateless: 
 In client server architecture, the communication must be stateless in nature. That means, the request has to contain all the information and server would not store any state regarding the request.  
@@ -16,13 +16,13 @@ If the requests are stateless, then server would not have to look beyond the req
 But the disadvantage is that, repetitive data would be sent for each request to the server. 
 Now the architecture becomes client-stateless-server architecture. 
 
-![](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Basics/images/REST%20Client%20Stateless%20Server.png)
+![](images/REST%20Client%20Stateless%20Server.png)
 
 ### Cache: 
 Here, data within a response to a request should contain whether the response is cacheable or not. This would increase the performance of our system. But downside is that we may send stale responses to the user. 
 Now the architecture becomes client-cache-stateless-server architecture.  
 
-![](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Basics/images/REST%20Client%20Cache%20Stateless%20Server.png)
+![](images/REST%20Client%20Cache%20Stateless%20Server.png)
 
 ### Uniform Interface:
 niform interface is a key principle in REST (Representational State Transfer) design. It means that the way a client interacts with a server should be consistent and standardized, regardless of the specific details of the server's implementation.
@@ -40,7 +40,7 @@ Representation of resources: Resources are represented in a standardized format 
 Hypermedia as the engine of application state (HATEOAS): Resources contain links to related resources, allowing clients to discover and navigate the server's resources dynamically.
 By following a uniform interface, RESTful services can be more easily understood and used by clients, and can be more easily maintained and updated by developers.
 
-![](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Basics/images/Uniform%20Interface%20Example.png)
+![](images/Uniform%20Interface%20Example.png)
 
 ### Layered Architecture
 
@@ -48,4 +48,4 @@ A layered system architecture in REST means that the components of the system ar
 
 In a layered system architecture, each layer only interacts with the layer immediately below or above it, and not with any other layers in the system. This helps to keep the system modular and makes it easier to replace or update individual components without affecting the entire system.
 
-![](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Basics/images/Layered%20Architecture%20Example.png)
+![](images/Layered%20Architecture%20Example.png)
