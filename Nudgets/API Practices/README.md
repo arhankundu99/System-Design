@@ -89,8 +89,6 @@ This readme lists a common API response structure so that there are no inconsist
     
     Eg: 
     
-    ```code: "RED-500"```, this code may indicate some server issue with Redis. 
-    
     ```code: "SE2-401"```, this code may indicate unauthorized error with service 2
 
 2. ```referenceCode```: In case of success, there would be no reference code, But in case of failure, our reference code would contain the service name which is already present in the ```code```, along with an unique number, which would be used to find the issue in ```logs```. So we also have to incorporate this number in logs.
