@@ -1,28 +1,44 @@
 # API Practices
+
+Refer: https://medium.com/@nadinCodeHat/rest-api-naming-conventions-and-best-practices-1c4e781eb6a5
+
+![API Structure](./images/api-structure.png)
+
 ## 1. API Versioning
 Following API versioning is a good practice. Advantage is that if we do some major updates in our api and the update breaks, then client can quickly revert back to using the previous version of the api.
 
 Convention of api versioning: ```<domain>/<service_name>/api/v1/...```
 
 ## 2. API Naming
-We can follow the response hierarchy to write the name of the apis
+1. Please use nouns while naming your apis. DO NOT USE verbs. We already have HTTP verbs.
 
-For eg., we want to return posts of an user. The response structure can be:
-```json
-{
-    "userId": 123,
-    "posts" : []
-}
+2. Use pluralized nouns unless they are singleton resources. 
 ```
-The api for this can be ```users/:userId/posts```
+/employees/:employee-id (This is appropiate)
+/employee/:employee-id (This is inppropiate)
+```
 
-The last element in the api name should be the resource that you want to get or you want to post into.
+3. Use ```kebab-case``` for naming your apis.
 
-The api structure also depends upon the use case, Check what are the steps that the client is following to make the api call, and design your structure in that order.
+4. We can follow the response hierarchy to write the name of the apis.
 
-For eg., one use case can be that we get the posts of an user by selecting year and userId
-1. Assuming both year and userId are required, the api can be ```/year/:year/users/:userId/posts```.
-2. Assuming only year is required and userId is optional, the api can be ```/year/:year/posts?userId={userId}```
+    For eg., we want to return posts of an user. The response structure can be:
+    ```json
+    {
+        "userId": 123,
+        "posts" : []
+    }
+    ```
+    The api for this can be ```users/:userId/posts```
+
+    The last element in the api name should be the resource that you want to get or you want to post into.
+
+    The api structure also depends upon the use case, Check what are the steps that the client is following to make the api call, and design your structure in that order.
+
+    For eg., one use case can be that we get the posts of an user by selecting year and userId
+    1. Assuming both year and userId are required, the api can be ```/year/:year/users/:userId/posts```.
+    2. Assuming only year is required and userId is optional, the api can be ```/year/:year/posts?userId={userId}```
+
 
 
 ## 3. API Response structure
