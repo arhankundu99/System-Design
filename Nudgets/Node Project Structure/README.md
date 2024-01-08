@@ -37,6 +37,10 @@ services/
             A1Service.js
         B/
             B1Service.js
+        X/
+            XService.js // Third party APIs (Handled in apiClients folder)
+        Y/
+            YService.js // Third party APIs (Handled in apiClients folder)
         health/
             HealthService.js
         ...
@@ -53,6 +57,11 @@ clients/
     redis/
         redisClient.js
     ...
+apiClients/
+    X/
+        XClient.js  // Axios instance and interceptors for service X
+    Y/
+        YClient.js  // Axios instance and interceptors for Service Y
 config/
     firebase/
         firebaseConfig.js
