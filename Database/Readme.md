@@ -1,4 +1,4 @@
-# Databases
+# Overview of Databases
 In a system design, How good our design is and how it can scale, depends very much on the choice of the database.
 Now databases generally do not impact our <b>functional requirements</b>. So to satisfy our functional requirements, we can use any database that we want. Normally the <b>non functional requirements</b> are the ones that are impacted by our choice of database.
 
@@ -105,15 +105,16 @@ Some of the most commonly used blob storage solution is <b>Amazon S3</b>.
 And with any blob storage solutions, we have to use <b>CDN</b> which stands for <b>Content Delivery Network</b>.
 
 <b>What is a CDN?</b>
+
 CDN stands for Content Delivery Network. CDN is basically a group of servers distributed across the globe which helps in faster delivery of content to the user. 
 
-![CDN](https://github.com/arhankundu99/System-Design/blob/main/Database/images/CDN.png)
+![CDN](images/CDN.png)
 
 How does CDN delivers content faster? CDN Basically caches content from the origin server and whenever a request comes, a nearby server sends the appropiate responses. CDN also compresses images or videos so that the content can be sent faster.
 
 <b>Working of CDN</b>
 
-![Working Of CDN](https://raw.githubusercontent.com/arhankundu99/System-Design/main/Database/images/Working%20of%20CDN.png)
+![Working Of CDN](images/Working%20of%20CDN.png)
 
 
 Setting up S3 with CDN: https://learnetto.com/blog/cloudfront-s3
@@ -155,7 +156,7 @@ SQL stands for <b>Structured Query Language</b>. SQL Databases are called <b>Rel
 <br></br>
 In Relational Database management systems, data is stored in the form of tables. Each row is uniquely identified by a primary key and each row can also have a foreign key (which is a primary key in another table). <b>Through the foreign key, a relation is formed between two tables, Hence it is called relational databases</b>.
 
-![RDBMS Example Image](https://github.com/arhankundu99/System-Design/blob/main/Database/images/rdbms%20image%201.png)
+![RDBMS Example Image](images/rdbms%20image%201.png)
 
 ## NoSQL Databases
 NoSQL is know as <b>"No SQL" (which means it cannot support sql)</b> and sometimes called as <b>"Not Only SQL"</b> (When the database can support SQL queries)
@@ -179,41 +180,11 @@ There are four kinds of NoSQL databases:
 ### Difference between Document, Graph, key-value and column databases
 To be written.
 
-## How does SQL databases work?
 
-SQL Databases follow <b>ACID</b> properties. ACID stands for
-<ul>
-  <li>
-    <b>Atomicity</b>: <b>Either all the transactions in the commit call will be successful or no transaction will be successful</b>. A very common example is sending some money to a friend. Here 2 transactions take place. One is debiting from your account and the other is crediting into your friend account. Both the transactions should either be successful or not successful. It should not happen that one transaction is successful and the other is not successful. If a person A is transferring X amount to person B, then the following steps will take place.
-    <ol>
-      <li>
-        <b>Transaction 1:</b> Debit X from A
-      </li>
-      <li>
-        <b>Transaction 2:</b> Credit X to B
-      </li>
-      <li>
-        <b>Commit the above transactions</b> (After commit call, the changes take place in the database)
-      </li>
-    </ol>
-  </li>
-  
-  <li>
-    <b>Consistency</b>: Consistency ensures that the data is consistent before and after the transactions. For example, Person A has balance Z in his account and he transfers X amount to Person B. Then after the transaction and if the transaction is successful, the Person A's balance should be Z - X and person B's balance should increase by X. The data in the database should be consistent.
-  </li>
-  
-  <li>
-    <b>Isolation</b>: Isolation ensures that if a transaction is occuring on some rows, then the rows are locked by the database and other transactions which would occur on these rows will have to wait for the rows to unlock. This ensures that no invalid transaction takes place. For eg., Let's say a person has 500 rs in his account. And he did 2 withdrawal requests for 300rs and 500rs. Because of the isolation property, when the transation for 300rs is taking place, then the row will be locked, that means the transaction of 500rs will not happen at that time. And when the transaction of 300rs finishes, the amount left is 200rs and this transaction fails. Without isolation, the two transactions may occur concurrently and the row would have inconsistent values then.
-  </li>
-  
-  <li>
-    <b>Durability</b>: Durability ensures that all the data in the database is written in disk. So that in case the database gets destroyed or restarted, the data can be recovered from the disk.
-  </li>
-</ul>
-
+### Vertical scaling of SQL Databases
 SQL Databases are <b>VERTICALLY SCALABLE</b>. That means there is just one server and to increase the number of requests it can handle, we can add more cpu, ram, ssd in it.
 
-![Vertical Scaling](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Vertical%20Scaling.png)
+![Vertical Scaling](images/Vertical%20Scaling.png)
 
 #### Advantages of vertical scaling
 <ul>
@@ -241,7 +212,7 @@ SQL Databases are <b>VERTICALLY SCALABLE</b>. That means there is just one serve
 #### Replication (Horizontal scaling technique)
 Replication is a <b>horizontal scaling technique</b> which is basically making exact copies of the database and storing them in different database servers.
 
-![Replication](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Replication.png)
+![Replication](images/Replication.png)
 
 <b>Advantages</b>
 <ul>
@@ -261,6 +232,7 @@ Replication is a <b>horizontal scaling technique</b> which is basically making e
 </ul>
 
 <b>When to use</b>
+
 So if our data is primarily read focussed, then we can use this database. 
 
 ### Normalization in SQL Databases
@@ -269,7 +241,7 @@ To be written
 #### Can we design SQL Databases to be replicable and become distributed database?
 Distributed database is basically a collection of interconnected databases which are spread across various locations.
 
-![Distributed Database](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Distributed%20Database.jpg)
+![Distributed Database](images/Distributed%20Database.jpg)
 
 With <b>distributed database with replication</b>, people can access the database nearer to them which would result in faster access to the data. 
 
@@ -290,7 +262,7 @@ Database sharding is basically <b>splitting our database into multiple chunks wh
 <br></br>
 <b>NOTE that sql databases like MySQL, Oracle, PostgreSQL do not support automatic sharding and we have to write manual logic for sharding</b>
 
-![Database Sharding](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Database%20sharding.png)
+![Database Sharding](images/Database%20sharding.png)
 
 <b>Advantages of database sharding</b>
 
@@ -314,7 +286,7 @@ Database sharding is basically <b>splitting our database into multiple chunks wh
 </ul>
 
 #### Sharding techniques
-![Range-Based Sharding](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Range%20Based%20Sharding%201.png)
+![Range-Based Sharding](images/Range%20Based%20Sharding%201.png)
 <ul>
   <li>
     <b>Range Based Sharding:</b> In this technique, we assign a <b>pre-defined range</b> to each shard. 
@@ -353,11 +325,11 @@ Database sharding is basically <b>splitting our database into multiple chunks wh
   </li>
 </ul>
 
-### Scaling SQL Databases Architechture Example
+### Scaling SQL Databases Architecture Example
 
 #### Design 1
 
-![Scaling SQL Database Design 1](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Scaling%20SQL%20Databases%201.png)
+![Scaling SQL Database Design 1](images/Scaling%20SQL%20Databases%201.png)
 
 <b>NOTE: Proxy is a service which is commonly used for load balancing, caching and security.</b>
 
@@ -371,7 +343,7 @@ Database sharding is basically <b>splitting our database into multiple chunks wh
 </ul>
 
 #### Improving Design 1
-![Design 1 Improvement](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Scaling%20SQL%20Databases%20Design%201%20Impovement.png)
+![Design 1 Improvement](images/Scaling%20SQL%20Databases%20Design%201%20Impovement.png)
 
 In this design, we have another proxy called <b>Shard Proxy</b> which is present between the <b>Load Balancer</b> and the <b>shard</b>. 
 <br></br>
@@ -385,8 +357,8 @@ Shard proxy can be used for the following reasons:
   </li>
 </ul>
 
-#### Sacrificing Consistency for availibility
-![Design 1 Improvement (Sacrificing consistency for availibility)](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Scaling%20SQL%20Databases%20Design%201%20Impovement%20(Sacrificing%20Consistency%20for%20availibility).png)
+#### Sacrificing Consistency for availability
+![Design 1 Improvement (Sacrificing consistency for availability)](images/Scaling%20SQL%20Databases%20Design%201%20Impovement%20(Sacrificing%20Consistency%20for%20availibility).png)
 
 In this design, we introduce <b>slave shards</b> where the data of master shard is replicated. Here, the following things happen:
 <ul>
@@ -418,12 +390,12 @@ NoSQL Databases follow <b>BASE</b> model. <b>BASE</b> stands for:
 
 NoSQL Databases are <b>Horizontally scalable</b>. That means to increase scalability, we can just add more database servers.
 
-![Horizontally Scalable](https://github.com/arhankundu99/System-Design/blob/main/Database/images/Horizontal%20Scaling.png)
+![Horizontally Scalable](images/Horizontal%20Scaling.png)
 
 ### CAP Theorem
 <b>CAP Theorem</b> states that among <b>Partition tolerance</b>, <b>Availibility</b> and <b>Consistency</b>, A distributed system can have <b>Only two</b> of the three properties.
 
-![CAP Theorem](https://github.com/arhankundu99/System-Design/blob/main/Database/images/CAP%20Theorem.png)
+![CAP Theorem](images/CAP%20Theorem.png)
 
 #### Partition tolerance
 Lets say we have two nodes A and B in our distributed database system. Any write in A is replicated in node B and any write in B is replicated in node A. Now, if the connection breaks between node A and node B, there are 2 ways for the database to work:
