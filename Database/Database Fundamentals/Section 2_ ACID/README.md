@@ -100,127 +100,24 @@ But in this case, if dirty read is enabled, then this would not happen.
 ![Lost Updates](./images/lost_updates.png)
 
 ### 2. Isolation Levels
+(READ MORE ABOUT THESE LEVELS IN SECTION 8: CONCURRENCY CONTROL)
 #### (a) Read Uncommitted
 Any change from outside is visible to an inflight transaction (Committed or not).
 
-Version Selection: When a transaction reads a row, the database engine selects the latest version of that row based on timestamps or transaction identifiers. This version can be either committed or uncommitted. So, it can read data in an intermediate state if another transaction is modifying the same row concurrently.
-
-Version Cleanup: After a transaction is committed, the DBMS may remove older versions of the row that are no longer needed. This cleanup helps manage storage and ensures that older, committed versions do not clutter the database.
-
-High Concurrency, Data Inconsistency: Read Uncommitted isolation indeed allows for high concurrency since transactions do not block each other. However, it also allows for data inconsistency, as transactions may read uncommitted changes made by others, potentially leading to unexpected or incorrect results.
-
-There are no locks which may lead to potential data corruption.
 
 #### (b) Read Committed
 Each query in a transaction only sees the committed changes made by other transactions.
 
-Here locks are used so that no two transactions can modify the same data concurrently. Since locks are used, this becomes an overhead which would result in less performance that Read Uncommitted isolation level.
 
 #### (c) Repeatable reads
 The transaction will make sure that when a query reads a row, that row will remain unchanged until the transaction is running.
 
-Consistent View of Data:
-
-When a transaction starts under the Repeatable Reads isolation level, it gets a consistent view of the database. This means that any data read during the transaction will appear the same throughout the transaction's duration, regardless of changes made by other transactions.
-Locking Mechanism:
-
-To maintain this consistent view, the database system typically uses locks. When a transaction reads data (like a row or a set of rows), it places a lock on that data.
-These locks can be shared locks or exclusive locks. Shared locks allow other transactions to read the locked data but prevent them from writing (modifying) it. Exclusive locks prevent other transactions from both reading and writing the locked data.
-
-Duration of Locks:
-
-Unlike lower isolation levels (like Read Committed), where locks are held for a shorter duration (often just for the duration of the read operation), in Repeatable Reads, locks are usually held until the transaction is completed (either committed or rolled back).
-This longer duration of locks ensures that if a transaction reads a row at the beginning, it will read the same data at the end of the transaction, even if other transactions are trying to modify this data.
-
-Handling Write Operations:
-
-If a transaction under Repeatable Reads isolation level tries to write data, it will acquire an exclusive lock on the data. This prevents other transactions from reading or writing the data until the first transaction is completed.
-
-Drawbacks:
-
-The main drawback of the Repeatable Reads isolation level is the potential for lock contention and deadlocks. Because locks are held for the duration of the transaction, other transactions might be blocked for a significant time, leading to reduced concurrency and potential deadlocks.
-Another issue is the possibility of phantom reads. While Repeatable Reads prevent other transactions from modifying data that has been read, it doesn’t prevent the insertion of new rows that meet the criteria of a query. Therefore, a transaction could read a set of rows matching a condition at the beginning and then find additional rows matching the same condition at the end of the transaction, due to insertions by other transactions.
-
-in Repeatable Reads, locks are acquired on-the-fly as data is accessed, and these locks are held until the transaction is completed. This approach ensures data consistency but can lead to higher lock contention and decreased concurrency, especially in systems with long-running transactions.
-
-```NOTE: This is an example internal working for the repeatable reads. Many other databases use MVCC (Multi version concurrency control which maintains their own versions (snapshots) before their transactions instead of locking the rows as we proceed).```
-
-```
-Also merge conflicts resolution can be implemented in repeatable reads. Suppose there are 4 rows in a table
-
----------
-id |  t
----------
-1  |  a
-2  |  a
-3  |  b
-4  |  b
----------
-
-And we begin 2 transactions concurrently (Here let's consider snapshot is being considered for repeatable reads)
-
-T1
-begin transaction isolation level repeatable read;
-update table1 set t = 'b' where t = 'a';
-select * from table1;
----------
-id |  t
----------
-1  |  b
-2  |  b
-3  |  b
-4  |  b
----------
-
-Now we do a similar transaction T2 (Note we did not commit the previous transaction yet)
-T2
-begin transaction isolation level repeatable read;
-update table1 set t = 'a' where t = 'b';
-select * from table1;
----------
-id |  t
----------
-1  |  a
-2  |  a
-3  |  a
-4  |  a
----------
-
-Now if we commit the transactions T1 and T2, and we do a select * from table1;
-
-We get
----------
-id |  t
----------
-1  |  b
-2  |  b
-3  |  a
-4  |  a
----------
-
-Note that here the changes from the 2 transactions were merged and not overwritten.
-
-```
 
 #### (d) Snapshot
 Each query in a transaction only sees the changes that have been committed before the transaction starts. It's like a snapshot version of the database. We don't get phantom reads here.
 
 #### (e) Serializable
 This is the highest level of isolation. Each transaction runs as if they are serialised one after the other even though they are running concurrently.
-
-```
-If we take the above example in repeatable reads section with transaction T1 and T2 (T2 running after T1), the table would look like this
----------
-id |  t
----------
-1  |  a
-2  |  a
-3  |  a
-4  |  a
----------
-
-
-```
 
 ## Isolation levels vs Read Phenomena
 ![Isolation levels vs read phenomenon](./images/isolation_levels_vs_read_phenomenon.png)
