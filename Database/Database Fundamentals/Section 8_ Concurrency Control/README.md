@@ -45,7 +45,7 @@ Now again I have two concurrent transactions running
 
 ![serializable_mvcc_transaction2](images/serializable_mvcc_transaction2.png)
 
-Here we get a serialization error because there would be a serialization error while merging in this case.
+Here we get a serialization error because there would be a serialization error while committing in this case.
 
 NOTE: When a transaction fails, In postgres, it is the responsibility of the application layer to take the decision of retrying. There is no retrying in the dbms.
 
