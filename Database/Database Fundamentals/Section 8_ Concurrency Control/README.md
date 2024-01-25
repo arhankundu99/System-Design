@@ -25,7 +25,7 @@ Now when I commit T2, the transaction T1 now operates on the updated row.
 
 
 ### Serializable isolation:
-In this isolation level, <b>THE TRANSACTION ONLY</b> reads those row versions which were available before the start of the transaction. (Notice the difference, in read committed, before the start of processing each query, the dbms reads the latest version, but here, the dbms reads those version before the start of transaction). The chances of conflicts are high in this case compared to read committed and the transactions in this isolation level may fail frequently. It is upon the application to retry. ```When a transaction starts, it gets a snapshot of all the current running transactions are currently running. And based on this, while executing the query, it decides on which row version to read. (As there is no timestamp included in the row version and it has to read those versions which were available before the start of the transaction). Also If a row is currently being updated by some other transaction, then a query in the current transaction which updates the row is also blocked like the read committed isolation. So when the dbms wants to read the row, it would read the version whose xmin < the txId of the current transaction and xmin is not equal to any of the txId available in the snapshot (which were running at the start of the transactions).```
+In this isolation level, <b>THE TRANSACTION ONLY</b> reads those row versions which were available before the start of the transaction. (Notice the difference, in read committed, before the start of processing each query, the dbms reads the latest version, but here, the dbms reads those version before the start of transaction). The chances of failures are high in this case compared to read committed. It is upon the application to retry. ```When a transaction starts, it gets a snapshot of all the current running transactions are currently running. And based on this, while executing the query, it decides on which row version to read. (As there is no timestamp included in the row version and it has to read those versions which were available before the start of the transaction). Also If a row is currently being updated by some other transaction, then a query in the current transaction which updates the row is also blocked like the read committed isolation. So when the dbms wants to read the row, it would read the version whose xmin < the txId of the current transaction and xmin is not equal to any of the txId available in the snapshot (which were running at the start of the transactions).```
 
 In this isolation level, the concurrent transactions must produce the results in each step of the transactions as if they were executed serially. If they fail to do so, then this transaction would fail.
 
@@ -45,9 +45,14 @@ Now again I have two concurrent transactions running
 
 ![serializable_mvcc_transaction2](images/serializable_mvcc_transaction2.png)
 
-Here we get a serialization error because there would be a conflict while merging in this case.
+Here we get a serialization error because there would be a serialization error while merging in this case.
 
 NOTE: When a transaction fails, In postgres, it is the responsibility of the application layer to take the decision of retrying. There is no retrying in the dbms.
+
+I also tried the below cases:
+1. Two parallel transactions, modifying different rows using primary keys => Transactions were successful.
+2. Two parallel transactions, modifying two different rows based on other fields (not primary keys) => One transaction failed due to serialization error.
+3. Two parallel transactions, modifying same row => One transaction failed due to concurrent update.
 
 ## Solving the double booking problem
 Now lets say we are building a ticket booking application and no two users can book the same seat. So we have to avoid multiple transactions booking the same seat.
