@@ -53,6 +53,9 @@ I also tried the below cases:
 1. Two parallel transactions, modifying different rows using primary keys => Transactions were successful.
 2. Two parallel transactions, modifying two different rows based on other fields (not primary keys) => One transaction failed due to serialization error.
 3. Two parallel transactions, modifying same row => One transaction failed due to concurrent update.
+4. Two parallel transactions, one reading a row and the other modifying the same row => Transactions were successful and the one which reads a row, reads the row version which was present before the start of the transaction.
+5. Two parallel transactions, one reading a row and the other modifying different row => Transactions were successful.
+6. Two parallel transactions, both reading rows (same or different) => Teansactions were successful.
 
 ## Solving the double booking problem
 Now lets say we are building a ticket booking application and no two users can book the same seat. So we have to avoid multiple transactions booking the same seat.
