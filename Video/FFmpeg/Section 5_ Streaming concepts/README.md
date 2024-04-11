@@ -259,7 +259,7 @@ hdntl=exp=1712922680~acl=%2f*~id=8968ed00e2a44a82b01bf475ce34355c~data=hdntl~hma
 hdntl=exp=1712922680~acl=%2f*~id=8968ed00e2a44a82b01bf475ce34355c~data=hdntl~hmac=7ca901e697bd4cdb68822ea744c52d8d0880d99c701f36e0e971411a739a4f30/News18_Gujarati_voot_MOB-audio_98834_eng=98800-video=1680400.m3u8
 ```
 
-- In Dash, `MPD` is the manifest which is short form for `Media Presentation Description` which is an `XML` based manifest file with extension as `.mpd`. It also has pointers to `m4s (fmp4)` streams of different bitrates and these files in turn have pointers to actual `m4s` files which contain the media data.
+- In Dash, `MPD` is the manifest which is short form for `Media Presentation Description` which is an `XML` based manifest file with extension as `.mpd`. It also has pointers to `m4s` streams of different bitrates and these files in turn have pointers to actual `m4s` files which contain the media data.
 
 Example `.mpd` file:
 ```
