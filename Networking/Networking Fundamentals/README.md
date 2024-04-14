@@ -10,4 +10,4 @@ I have read in many places that routers maintain the tcp sequence numbers for se
 
 But what does it do for UDP. Also router is level 3 device. For it to get the sequence number, it has to operate in level 4. So how does it work?
 
-3. What is anycast?
+3. What is anycast and how does it work?

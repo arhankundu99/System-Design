@@ -21,18 +21,12 @@ Layer 6 - Presentation is all about encoding and serialization. For eg., sending
 - DMAC: Destination Mac
 
 
-In session layer, We establish a connection. And then in transport layer, we add source port and destination port in the packet. Then in Network layer, we add source IP and destination IP, and in Data link, we add source mac and destination mac address. This frame is finally sent in the physical layer through radio waves or electrical signals etc.
+The above images depict how the data travels through the layers from client to server. In my point of view, Presentation and Session layer also can be included in the application layer. 
 
-
-For eg., we want to send a json payload, and the connection has not been extablished yet, so from client, first we go to session layer and check that the connection is not established, so this layer creates a packet with SYN, and then we go to the transport layer to add the ports, and then we go to the network layer to add the source and destination IP addresses and then in the data link layer to add the source and destination mac addresses and then in the physical layer.
-
-From the physical layer of the client, the data goes to physical layer of the server, then goes upward to data link, network, transport and then to session (It does not go above the session because first connection needs to be established). Then from the session layer of the server, it sends a ACK / SYN message and similary after this, from session layer of the client, it sends a ACK signal and finally a TCP connection is established.
-
-Now the json payload which was blocked, gets sent to the layers of the server to presentation (Where it gets decoded, deserialised) and to the application layer.
+Session layer deals with maintaining sessions like using auth tokens for requests etc.
 
 ![Alt text](images/switch_router.png)
 ![Alt text](images/firewall_LB_CDN.png)
-Explanation about switch and router will be given later.
 
 ![shortcomings_of_osi](images/shortcomings_of_osi.png)
 
@@ -52,6 +46,24 @@ A device can contain multiple network interfaces, and each interface will have i
 - A laptop might have an Ethernet adapter and a Wi-Fi adapter, each with its own unique MAC address.
 - A router may have several Ethernet ports and one or more Wi-Fi bands (like 2.4 GHz and 5 GHz), each with a different MAC address.
 
+### 2.4 GHz vs 5 GHz
+- These numbers are frequencies. Wifi can have both these bands or just one band.
+- Frequency is inversely proportional to wavelength and so `5 GHz` has less wavelength. Less wavelength indicates that `5 GHz` has `less penetration power` and so it is good for `short distances`.
+- Many devices like oven etc operate on `2.4 GHz`. When our device is configured to listen to `2.4 GHz` wifi signals, it would also listen to other `2.4 GHz` signals, which would cause `slow network speeds`. But it has `longer wavelength`, so its penetration power is more and it can be used for `long distances` also. 
+
+```
+More frequency -> More data can be sent per cycle -> Higher speeds -> But less penetration power -> less coverage.
+
+
+Less frequency -> Less data can be sent per cycle (And also interference with other devices with operate in same frequency) -> Less speed -> But high penetration power -> More coverage.
+```
+
+- In summary,
+
+    (a) If we want `more coverage`, but can deal with `slow speeds` (Due to other devices which operate on the same band), then we can go for `2.4 GHz` wifi band.
+    
+    (b) If we want `high speeds`, but can deal with `low coverage`, then we can go for `5 GHz` wifi band.
+
 ![host_to_host_comm_2](images/host_to_host_comm_2.png)
 
 If I want to send a msg to another device (which would have its own mac address), then we don't have a way to know where exactly to send it to and in the above example, the machines are on the same network and to send a message to another device, it needs to send the msg to all the other devices in the same network, (Go to level 2 in the data link layer to know the mac address) and then only the correct device would accept the message.
@@ -67,7 +79,7 @@ But this is also very dangerous security wise. Any malicious user can put a "sni
 IP address is allocated to a device when the device connects to a network and the mac address is a permanent address of the NIC (Network interface card) of the device (WiFi, bluetooth, ethernet ports). 
 
 ### Communication between devices within same network
-- (To be filled)
+- Device 1 -> Switch -> Device 2
 
 ### Switch vs router
 - A switch is like a manager for local traffic, ensuring data gets to the right device within the same network efficiently. Many routers are also integrated with switch.
@@ -75,7 +87,7 @@ IP address is allocated to a device when the device connects to a network and th
 
 
 ### Communication between 2 different networks
-- (To be filled)
+- Device 1 -> Switch -> Router -> Router -> Switch -> Device 2
 
 
 ### IP Addresses are used to find the network and mac addresses are used to find the device within the network
@@ -113,8 +125,8 @@ Network Address:
 The /16 suffix indicates that the first 16 bits of the IP address are used for the network portion, which corresponds to the first two octets.
 Therefore, the network address is obtained by setting the last two octets to 0.
 So, the network address for 192.168.195.1/16 is 192.168.0.0.
-Broadcast Address:
 
+Broadcast Address:
 The broadcast address for a subnet is obtained by setting all the host bits to 1. For a /16 subnet, this means setting the last two octets to 255.
 Therefore, the broadcast address for 192.168.195.1/16 is 192.168.255.255.
 In summary, for the CIDR block 192.168.195.1/16:

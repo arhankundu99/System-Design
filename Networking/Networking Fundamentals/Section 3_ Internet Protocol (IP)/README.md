@@ -14,7 +14,7 @@ Here in the above image, the wifi router also has a switch
 
 ![diff_network_comm](images/diff_network_comm.png)
 
-## Routers are special. They have 2 IP addresses or can have more also
+## Routers are special. They have 2 or more IP addresses
 Routers are special because they have two (or more) IP addresses. An IP address is assigned to each of the router’s two “interfaces”. The first router interface is called the WAN (Wide Area Network) interface. This is the side of the router that faces the Internet and has a public IP address. The second router interface is called the LAN (Local Area Network) interface. This is the side of the router that faces the home network’s computers and has a private IP address.
 
 ![routers_2_ip_addresses](images/routers_2_ip_addresses.png)
@@ -28,7 +28,7 @@ One of the primary jobs of a router is to assign IP addresses to the computers o
 1. Device gets connected to wifi network (Using wifi protocols).
 2. Device does not have IP Address allocated, nor does it know the IP address of DHCP server (Dynamic host configuration protocol) which assigns an IP address.
 3. Device `broadcasts` a `DHCP discovery message` which goes through the switch using broadcast mac address `ff:ff:ff:ff:ff:ff`. 
-4. The DHCP server gets the broadcast message, and sends a `DHCP offer message` which contains the IP address and other network parameters to the mac address of the device.
+4. The DHCP server gets the broadcast message, and sends a `DHCP offer message` which contains the IP address and other network parameters like `DNS IP` (Read about this in Section 6) to the mac address of the device.
 
 ## STATIC IP ADDRESSES
 
@@ -267,7 +267,7 @@ In broadcast, the content is duplicated at the network level, but not at the cli
 There are two types of broadcast:
 - Local broadcast: In this, the content is broadcasted to all the other devices in the network and is rejected by the router.
 
-- Directed broacast: In this, the content is broadcasted to all the other devices in a specific network. This is not supported by many routers due to specific routers.
+- Directed broacast: In this, the content is broadcasted to all the other devices in a specific network. This is not supported by many routers due to rapid network congestion.
 
 ![broadcast_1](images/broadcast_1.png)
 
@@ -292,6 +292,11 @@ ffmpeg -re -i video.mp4 -c:v libx264 -preset ultrafast -tune zerolatency -c:a aa
 Now open vlc media player on another device in the same network `Media > Open Network Stream` and type `udp://239.255.0.1:1234`. We would now see the video getting played.
 
 So here, switch notes that whenever a frame comes to `239.255.0.1:1234`, then it would send it to the subscribers.
+
+## Multicast is difficult to setup in public internet.
+- Not all routers support multicast and the switches would have to maintain the subscription list of the subscribers.
+
+- Many live streaming applications do live streaming with the help of cdn through unicasting.
 
 ## tcpdump
 
