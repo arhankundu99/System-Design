@@ -1,4 +1,4 @@
-# Networking Basics
+# HTTP Basics
 
 ## Protocol 
 A protocol is a set of rules of communication between two computers. Communications between two devices require that the devices agree on the format of data that is being exchanged. 
