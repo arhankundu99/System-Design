@@ -31,3 +31,6 @@ Common video codecs like H.264, H.265 (HEVC), and VP9 are highly efficient at co
 
 So, while the theoretical, uncompressed bitrate for FHD video may be very high, the actual streaming bitrate is much lower due to video compression. The 10-20 Mbps range for high-quality streaming takes this compression into account and is suitable for most viewers with standard internet connections.
 
+## `Playout`
+Playout refers to the series of processing steps where the raw feed is transformed into a final stream format that is suitable for consumption by clients. This includes transcoding, adding graphics, and other necessary adjustments to ensure the stream is compatible and optimized for different devices and network conditions.
+
