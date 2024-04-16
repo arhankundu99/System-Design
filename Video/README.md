@@ -5,7 +5,7 @@
 
 ![transcoding_flow_1](FFmpeg/Section%203_%20Media%20Concepts/images/transcoding_flow_1.png)
 
-## Live streaming overview of hotstar
+## Live streaming overview of hotstar (My understanding)
 ![live_streaming_overflow](<images/Live Streaming Overview.png>)
 
 - SDI Feed (High definition, uncompressed feed which has no loss of quality) is sent to a `hardware device` called `AWS Elemental Link`.
