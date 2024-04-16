@@ -1,5 +1,5 @@
 # Video Stuff
-## `Pleaso go through video basics and ffmpeg first!`
+## `Please go through video basics and ffmpeg first!`
 
 ## Transcoding flow
 
