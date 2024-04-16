@@ -9,7 +9,7 @@
 ![live_streaming_overflow](<images/Live Streaming Overview.png>)
 
 - SDI Feed (High definition, uncompressed feed which has no loss of quality) is sent to a `hardware device` called `AWS Elemental Link`.
-- The AWS elemental link sends the video stream to `studios` where some directors monitors the stream. The director gets stream from all camera angles and chooses the best possible camera streams for user experience. 
+- The AWS elemental link sends the video stream to `studios` where some directors monitor the stream. The director gets stream from all camera angles and chooses the best possible camera streams for user experience. 
 - Whenever the director feels the need of `inserting ads`, he would insert a `SCTE-104` message which contains information like `CUE OUT` (Move out of the main stream), `duration` (duration of the ad), `identifier` etc. SCTE-104 messages work with `SDI streams`
 
 - `CUE-OUT` in `SCTE-104` message is used to denote moving out of main stream and show ad or any other streams whereas `CUE-IN` message is used to denote moving into the main stream from other streams such as ads.
