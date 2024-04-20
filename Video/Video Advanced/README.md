@@ -3,7 +3,7 @@
 
 ## Transcoding flow
 
-![transcoding_flow_1](FFmpeg/Section%203_%20Media%20Concepts/images/transcoding_flow_1.png)
+![transcoding_flow_1](../FFmpeg/Section%203_%20Media%20Concepts/images/transcoding_flow_1.png)
 
 ## Live streaming overview of hotstar (My understanding)
 ![live_streaming_overflow](<images/Live Streaming Overview.png>)
