@@ -25,7 +25,7 @@ COMMIT TRANSACTION
 ```
 
 ## Atomicity
-Atomicity simply means that all the queries in the transaction must either succeed completely or if any one of the transaction fails, the the entire transaction should fail. All the prior successful queries would have to rollback.
+Atomicity simply means that all the queries in the transaction must either succeed completely or if any one of the query in the transaction fails, the the entire transaction should fail. All the prior successful queries would have to rollback.
 
 (The name of the concept is derived from the word "atom" because atom cannot be split. Well, now using nuclear fission, we can split, but in 1970s when this concept was introduced, then there was no concept of atom splitting)
 
