@@ -312,6 +312,29 @@ Address: 142.250.183.206
 
 In the above output, now we dont see `Non authoritative answer`, because the result is not from `cache`.
 
-The IP address of `ns3.google.com` is found through the same flow of resolving dns
+The IP address of `ns3.google.com` is found through the same flow of resolving dns.
+
+
+## Interesting facts!
+```
+There are a total of 13 root name servers in the Domain Name System (DNS). These servers are designated by the letters A through M. Each server is operated by a different organization and, through the use of Anycast, each of these 13 root name servers is replicated across multiple locations around the world to ensure redundancy and high availability.
+```
+
+```
+These are the servers:
+A Root Server - Managed by Verisign, Inc.
+B Root Server - Managed by the University of Southern California, Information Sciences Institute.
+C Root Server - Managed by Cogent Communications.
+D Root Server - Managed by the University of Maryland.
+E Root Server - Managed by NASA Ames Research Center.
+F Root Server - Managed by Internet Systems Consortium, Inc.
+G Root Server - Managed by the U.S. Department of Defense (DoD) Network Information Center.
+H Root Server - Managed by the U.S. Army Research Lab.
+I Root Server - Managed by Netnod in Sweden.
+J Root Server - Managed by Verisign, Inc.
+K Root Server - Managed by RIPE NCC in the Netherlands.
+L Root Server - Managed by ICANN (the Internet Corporation for Assigned Names and Numbers).
+M Root Server - Managed by WIDE Project in Japan.
+```
 
 
