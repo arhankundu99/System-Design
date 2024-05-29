@@ -2,7 +2,7 @@
 
 This readme consists of the approaches that I would take for scaling my services. 
 
-## Step 1: Same subnet setup
+## Step 1: Efficient network configs
 
 ![same_subnet_setup](images/same_subnet_setup.png)
 
