@@ -6,6 +6,8 @@ Video link by Arpit: [here](https://www.youtube.com/watch?v=WjT253DBlXk)
 
 I have compiled my learnings from the paper above here.
 
+Note: CDN and DNS also uses anycast to make their services highly available.
+
 ## Approaches to scale load balancers.
 ### Approach 1
 Normally what happens is when the client initiates a request, the request lands on our load balancers and the load balancer is responsible for distributing the traffic to our origin servers (Not taking into account of any other reverse proxies like api gateways in this scope).
