@@ -12,3 +12,7 @@ Each broker has the metadata.
 - In older versions of kafka, <b>Zookeeper</b> was used to manage metadata, but now <b>Kafka controller</b> manages this metadata.
 - Each broker sends heartbeat to the controller. If a broker does not send a heartbeat, then the controller would consider it dead and update the metadata. Brokers periodically synchronise the metadata internally and with the controller / zookeeper.
 - The producer regularly fetches the metadata to update the list of brokers for each partition. The refresh would also be triggered in case of an error while publishing the message.
+
+![Kafka design](./Kafka.png)
+
+Also refer the mongo design [here](../../Database/Database%20Fundamentals/Mongo%20Overview/README.md)
