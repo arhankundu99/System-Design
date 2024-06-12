@@ -6,5 +6,6 @@ Most of the content is taken from:
 2. Database fundamentals by `Hussein Nasser`
 3. Network fundamentals by `Hussein Nasser`
 4. Video and ffmpeg by `Syed Andaleeb Roomy`
-5. Byte byte go posts
-6. Countless medium posts
+5. `Arpit's` youtube channel
+6. Byte byte go posts
+7. Countless medium posts
