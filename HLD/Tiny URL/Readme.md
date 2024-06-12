@@ -78,12 +78,12 @@ Some of the examples of this system are:
 ### Step 3 (Design)
 
 <b>Design Iteration 1</b>
-![Tiny URL Design Iteration 1](https://github.com/arhankundu99/System-Design/blob/main/Tiny%20URL/images/Tiny%20URL%20Design%201.png)
+![Tiny URL Design Iteration 1](./images/Tiny%20URL%20Design%201.png)
 
 Note that there will be multiple instances of the short url service and the database.
 
 <b> Design Iteration 2 </b>
-![Tiny URL Design Iteration 2](https://github.com/arhankundu99/System-Design/blob/main/Tiny%20URL/images/Tiny%20URL%20Design%20Iteration%202.png)
+![Tiny URL Design Iteration 2](./images/Tiny%20URL%20Design%20Iteration%202.png)
 
 <b> Now how do we generate the unique short url? </b>
 We have to make sure that the instances of the short url service do not generate the same short url (Collisions should not happen).
@@ -95,7 +95,7 @@ So what we need is a predictable way to generate a short url knowing that there 
 One very simple way to implement this is to use ONE of the features of Redis (Which is a cache system) which returns an unique number whenever a request for unique number comes to redis. Redis is basically an in memory store used to cache the data in key, value pairs.
 
 <b>Design Iteration 3</b>
-![Tiny URL Design Iteration 3](https://github.com/arhankundu99/System-Design/blob/main/Tiny%20URL/images/Tiny%20URL%20Design%20Iteration%203.png)
+![Tiny URL Design Iteration 3](./images/Tiny%20URL%20Design%20Iteration%203.png)
 
 Now this design would work fine, but there are some <b>major problems</b>.
 <ul>
@@ -110,7 +110,7 @@ Now this design would work fine, but there are some <b>major problems</b>.
 We can argue that we can keep multiple redis servers to reduce the load.
 
 <b>Design Iteration 4</b>
-![Tiny URL Design Iteration 4](https://github.com/arhankundu99/System-Design/blob/main/Tiny%20URL/images/Tine%20URL%20Design%20Iteration%204.png)
+![Tiny URL Design Iteration 4](./images/Tine%20URL%20Design%20Iteration%204.png)
 
 So if we keep multiple redis servers, then also we would have a major problem.
 
@@ -118,17 +118,6 @@ One very simple solution is to give a series to a redis and another series to an
 Now it becomes complicated to manage the series.
 
 <b>Design Iteration 5</b>
-![Tiny URL Design Iteration 5](https://github.com/arhankundu99/System-Design/blob/main/Tiny%20URL/images/Tine%20URL%20Design%20Iteration%205.png)
+![Tiny URL Design Iteration 5](./images/Tine%20URL%20Design%20Iteration%205.png)
 
 Now one of the problems with this design is that let's say a url service got a range 1 - 1000 assigned and the service after serving some requests stopped working. So there is no way to track the unused tokens in the range 1 - 1000. But even if we lose some of the tokens every day, it wont matter much because our system has the capacity to store massive number of urls.
-
-Now which database to use to store the urls?
-A SQL Database for a massive number of URLs would start to give some problems. We can possibly shard the SQL database and make it work. But NoSQL Databases are much easier to scale than SQL Database. So we can use a NoSQL Database here.
-
-So this approach is good enough from the functional and non functional requirements' point of view. But this system does not give us any metrics like the location from where most of the requests are coming, what kind of urls are being converted etc., If we have the geographic locations, we can assign more servers in that location.
-
-So for analytics, what we can do is, each time a request comes to the url service, the request comes with a lot of attributes, like the origin header (which says about the platform from which the request is sent), or source IP Address (Which is an unique Intenet Protocol Address for our computer to connect to the internet).
-
-What we can do is, we can use <b>Kafka</b> for analytics. So each time a request comes, we will <b>asynchronously</b> (So that our main functions do not get blocked) send the request to kafka. But sending the request to kafka everytime a request hits the url service is also not very much optimised. 
-
-So what we can do is, we can maintain a queue in the service to store the requests and everytime the queue size becomes equal to a threshold size, we can push all the requests (asynchronously) to <b>Kafka</b>.
