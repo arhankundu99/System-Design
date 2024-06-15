@@ -29,6 +29,6 @@ It is ok if the lists are refreshed every hour. So we can go for `batch processi
 ## Architecture
 - POST api which would contain the above info (song_id, user_id, etc). This api is triggered when the song is selected to play from the client side.
 - The service adds the events in kafka brokers.
-- Batch job runs every hour and consumes events from the brokers and adds in DB.
-- Jobs which would do aggregations for each usecase and add in memory databases like redis.
-- Client invokes `GET` api to get songs which reads from CDN cache. In case of cache miss / cache ttl expiry in CDN, the service would read from redis.
+- Batch job runs every hour and consumes events from the brokers and adds in Data warehouses like `BigQuery`.
+- Jobs which would do aggregations for each usecase and add in memory databases like redis and persistant relational / non relational databases.
+- Client invokes `GET` api to get songs which reads from CDN cache. In case of cache miss / cache ttl expiry in CDN, the service would read from redis. In case of redis miss, then query to DB
