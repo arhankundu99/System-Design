@@ -123,7 +123,7 @@ Request body
 - User selects the seats.
 - The service marks the ticket status to `in progress` with the `status_updated_at` to current timestamp.
 - User creates the booking. The booking status is `in progress`
-- User has limited time to complete the booking. If the service gets the payment and checks if one of the tickets in the line items has time expired, then refund is given.
+- User has limited time to complete the booking. The service initiates a payment with an expiry (Phonepe provides this). If the user tries to do a payment after expiry, then the payment fails.
 
 ## HLD
 ![HLD](images/HLD.png)
