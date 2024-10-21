@@ -206,3 +206,11 @@ document.getElementById('fileInput').addEventListener('change', function (event)
 });
 ```
 
+
+## Download flow
+![Download_flow_1](images/Download_flow_1.png)
+![Download_flow_2](images/Download_flow_2.png)
+![Download_flow_3](images/Download_flow_3.png)
+![Download_flow_4](images/Download_flow_4.png)
+
+
