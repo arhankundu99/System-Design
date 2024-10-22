@@ -1,0 +1,3 @@
+mvn archetype:generate -DgroupId=com.lld.amazonlocker -DartifactId=AmazonLocker -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+mvn clean install
+java -jar target/AmazonLocker-1.0-SNAPSHOT.jar
