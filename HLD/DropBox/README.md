@@ -84,6 +84,8 @@ An expiration time interval
 
 - Now when the user wants to upload a file, our service would request presigned url from S3, and return the presigned url to the client. And then client would upload the file directly to bucket using the presigned url.
 
+- If the presigned url expires, then the client would detect this and request for another presigned url and continue the upload process.
+
 ![HLD_2](images/HLD_2.png)
 
 ### 3. User should be able to download files
@@ -109,7 +111,7 @@ For this we would be using the share table we have in the entities section.
 
 <b>Client side code for uploading files</b>
 ```js
-async function uploadFileInChunks(file) {
+async function uploadFileInChunks(file, presignedUrl) {
     const chunkSize = 5 * 1024 * 1024; // 5 MB per chunk (minimum for S3)
     const totalChunks = Math.ceil(file.size / chunkSize);
 
@@ -123,13 +125,11 @@ async function uploadFileInChunks(file) {
         const end = Math.min(start + chunkSize, file.size);
         const fileChunk = file.slice(start, end);
 
-        // Get presigned URL for the current chunk
-        const presignedUrl = await getPresignedUrlForChunk(file.name, uploadId, chunkIndex + 1);
-
         // Upload the chunk to the presigned URL
         const etag = await uploadChunk(presignedUrl, fileChunk);
 
         // Save the ETag for later (needed to complete the multipart upload)
+        // The chunk index that we pass needs to be greater than the previous chunk index (It does not need to be consecutive)
         etags.push({ PartNumber: chunkIndex + 1, ETag: etag });
 
         console.log(`Uploaded chunk ${chunkIndex + 1}/${totalChunks}`);
@@ -153,17 +153,6 @@ async function initiateMultipartUpload(fileName) {
     return data.uploadId;
 }
 
-// Helper function to get a presigned URL for a specific chunk
-async function getPresignedUrlForChunk(fileName, uploadId, partNumber) {
-    const response = await fetch('/api/get-presigned-url', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fileName: fileName, uploadId: uploadId, partNumber: partNumber })
-    });
-
-    const data = await response.json();
-    return data.presignedUrl;
-}
 
 // Helper function to upload a single chunk to S3 using the presigned URL
 async function uploadChunk(presignedUrl, fileChunk) {

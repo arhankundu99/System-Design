@@ -1,10 +1,16 @@
-# Top K
+# Top K design
+Refer: 
+- https://systemdesignschool.io/problems/topk/solution
+- https://www.hellointerview.com/learn/system-design/answer-keys/top-k
+
 ## Requirements
 Find top K videos in youtube by
 - All time.
 - Month
 - Day
 - Hour
+
+And the top K videos should be fetched in sliding window approach.
 
 ## Non functional Requirements
 - Scalable
@@ -37,7 +43,7 @@ We can use in-memory if we are smart enough.
 MediaId, count, window
 
 ## API or interfance
-- GET `/top_k/v1/views?K={k}&window={window}
+- GET `/top_k/v1/views?K={k}&window={window}`
 ```
 {
     "code": 200,
@@ -63,9 +69,18 @@ Problems:
 ### Design 2
 ![HLD_2](images/HLD_2.png)
 
-### Design 3
-In this design, each consumer is in separate consumer group
+## Design 3
 ![HLD_3](images/HLD_3.png)
 
-### Design 4
-Scaling the writes because the above solution does not solve for massive amount of writes
+We can do the same using `Redis Sorted Sets`.
+
+## Design 4 (Handling time windows)
+This requires having two consumers per partition and then one of the consumer keeps track of the starting offset in the partition. In the second consumer, while `current_time - event[offset].time > window`, consumer prepares a request to send to the server to decrement the count as well as increment the offset.
+
+Note we have different servers to handle different time windows.
+![HLD_4](images/HLD_4.png)
+
+We can also add a cache to lower the latency. (We have to decide how much inconsistency we are fine with here.)
+
+
+## Follow up: Handle arbitary time windows now.
