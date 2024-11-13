@@ -138,3 +138,26 @@ If the TTL expires (indicating the user did not complete the purchase in time), 
 
 Now our Ticket table only has two states: available and booked. Locking of reserved tickets is handled entirely by Redis. The key-value pair in Redis is the ticket ID and the value is the user ID. This way we can ensure that when a user confirms the booking, they are the user who reserved the ticket.
 
+## Flow with Redis Distributed lock
+- User choses a seat. The frontend shows the tickets which are not yet booked + which are not being currently booked.
+- The backend tries to acquire a lock. If it fails, then an error message is shown to select another seat. If it suceeds, then the lock is acquired with key as ticket_id and value as userid and a ttl.
+- A timer runs on the lock after which the lock is invalidated.
+- User moves to payment page to do the payment. The backend checks if the lock's timeout is close. If it is close, then the backend extends the lock's timeout.
+- User does the payment and once the complete_order api is called, the order is complete and the backend releases the lock. If the lock was released previously due to timeout, then the backend checks whether the ticket is still available, else a refund is initiated.
+
+Why is the value for the lock needed? Read about redis distributed lock [here](../../Nudgets/Redis%20Distributed%20Lock/README.md)
+
+
+
+## Blocking inventory for ecommerce 
+- For ticket master, we used redis distributed lock on the ticket id.
+- But for ecommerce system, the flow would be somewhat different.
+- User adds the items in cart.
+- User checks out. This creates an order id and the backend decrements the count of all the items in RDBMS and adds the items with their quantity in redis with a ttl with key as order_id.
+
+Now the below cases would happen
+- Payment is successful and ttl is not expired: In this case, the order service manually deletes the key from redis.
+- Payment is cancelled: In this case, the order service manually deletes the key and increases the inventory or if ttl is expired, then a callback is made to increase the inventory. The order is marked as cancelled.
+- redis ttl is expired: The order service increases the inventory using the callback which is called when ttl is expired. The order is marked cancelled by order service.
+- Redis ttl is expired and payment is successful now: The order service checks payment is successful, but the order was marked cancelled. The order service checks if the inventory can be decremented to fulfill the order or the user is given a refund
+

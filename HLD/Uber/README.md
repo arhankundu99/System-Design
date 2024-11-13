@@ -124,3 +124,11 @@ if the driver is stationary or moving slowly, updates can be less frequent. Conv
 - Now If another service wants to acquire lock for the same key, then redis would try to acquire lock in majority of the replicas and fail since the lock is previously acquired.
 
 ![HLD_5](images/HLD_5.png)
+
+## Sample flow of finding the drivers using redis distributed lock
+- Using redis geospacial database, find the drivers within 2 KM radius.
+- Filter out the drivers who are busy.
+- Check if the lock can be acquired on a available driver.
+- If yes, acquire the lock and send a notification.
+- If the driver denies, check for another set of drivers.
+- Based on the retry count for the request, increment the radius.
