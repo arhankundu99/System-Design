@@ -41,8 +41,14 @@ group_id, created_by
 - Chat
 ```
 chat_id, group_id, from, message, created_at, updated_at
+```
 
-chat_id, to, status (delivered, in_progress, not_delivered)
+- Events (chats, creation of group etc)
+```
+event_id, event_desc, to, created_at, status (delivered, not_delivered)
+
+- We would be creating an event for every user.
+- In case a message needs to be sent to every group user, then we would be creating individual events for each user.
 ```
 
 ## API endpoints
@@ -76,7 +82,16 @@ accesstoken in headers
 ![HLD_2](images/HLD_2.png)
 
 ## Sending messages to other user when the other user is offline
-In this case, we would be reading the `chat` table which has `chat_id`, `to`, `status` and we would be sending these updates to the offline user once they are online.
+In this case, we would be reading the `events` table for the `to` user and sending these updates to the offline user once they are online.
 
-## Another way of doing this is to use pub / sub
-![HLD_3](images/HLD_3.png)
+## Scaling even more
+Instead of direct server to server connection for sending messages, we would be offloading to queue where `every user would correspond to a topic`. 
+
+We would be having billion users and Kafka is not made for billions of topics. So we would be using `Redis Pub/Sub` here as redis pub/sub is incredibly lightweight since it doesn't provide most of the functionality provided by Kafka. (Answered in one of the comments here: https://www.hellointerview.com/learn/system-design/answer-keys/whatsapp)
+
+![Doubt](images/doubt.png)
+
+![HLD_3](./images/HLD_3.png)
+
+
+
