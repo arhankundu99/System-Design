@@ -10,7 +10,9 @@ class Singleton {
         if (instance == null) {
             // Make it thread safe
             synchronized(Singleton.class) {
-                instance = new Singleton();
+                if (instance == null) {
+                    instance = new Singleton();
+                }
             }
         }
         return instance;

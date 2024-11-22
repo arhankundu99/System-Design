@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="64649b17-20ea-4a16-b899-9bb9c492d8fc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/exceptions/InvalidStateException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/Driver.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/DriverLock.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/DriverLockService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/IDriverLockService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/Location.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/Person.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/Rider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/Trip.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/models/TripStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/services/DriverService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/services/RiderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/services/TripService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/strategies/IMatchMakingStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cab Booking Application/src/strategies/MatchMakingStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/algorithms/DoublyLinkedList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/algorithms/DoublyLinkedListNode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/exceptions/KeyDoesNotExistException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/exceptions/StorageFullException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/services/CacheService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/storage/HashMapStorage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/storage/IStorage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/strategies/IEvictionPolicy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/strategies/LRUEvictionPolicy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cache/src/utils/OutputPrinter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/controllers/GameController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/exceptions/CellOutOfBoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/exceptions/InvalidChosenPieceException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/exceptions/InvalidMoveException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/models/Board.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/models/Cell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/models/Color.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/models/Player.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/models/pieces/Pawn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/models/pieces/Piece.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Chess/src/models/pieces/PieceType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cricbuzz/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cricbuzz/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Cricbuzz/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/exceptions/SameDataTypeConversionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/CSVData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/CSVToJSONTransformer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/CSVToXMLTransformer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/DataTransformerFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/DataType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/IDataTransformer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/JSONData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/JSONToXMLTransformer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/models/XMLData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/utils/CSVUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/utils/JSONUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Data transaformation library/src/utils/XMLUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Message Queue/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Message Queue/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Message Queue/src/models/Response.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Message Queue/src/models/Subscriber.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Message Queue/src/services/MessageQueueService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Message Queue/src/services/TopicHandlerService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Message Queue/src/utils/OutputPrinter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Money Splitter/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/algorithms/DoublyLinkedList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/algorithms/DoublyLinkedListNode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/exceptions/KeyDoesNotExistException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/exceptions/StorageFullException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/models/CacheReadResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/models/CacheWriteResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/services/MultiLevelCacheService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/services/SingleLevelCacheService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/storage/HashMapStorage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/storage/IStorage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/strategies/IEvictionPolicy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/strategies/LRUEvictionPolicy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Multi Level Cache/src/utils/OutputPrinter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/controllers/NotificationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/models/EmailNotification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/models/Notification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/models/NotificationType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/models/SMSNotification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/services/EmailNotificationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/services/INotifcationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/services/NotificationServiceFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Notification Service/src/services/SMSNotificationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ParkingLot/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Rate Limiter/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Rate Limiter/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Rate Limiter/src/controllers/RateLimitController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Rate Limiter/src/models/Bucket.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Rate Limiter/src/models/Rule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Rate Limiter/src/strategies/IRateLimitStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Rate Limiter/src/strategies/SlidingWindowRateLimitStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Rate Limiter/src/strategies/TokenBucketRateLimitStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/controllers/GameController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/exceptions/InvalidEntityPositionException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/models/Board.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/models/Dice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/models/Entity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/models/EntityType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/models/Ladder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/models/Player.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Snake And Ladders/src/models/Snake.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpreadSheet/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpreadSheet/src/models/Cell.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpreadSheet/src/models/FontStyle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpreadSheet/src/models/FontType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpreadSheet/src/models/ISheet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpreadSheet/src/models/Row.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../SpreadSheet/src/models/Sheet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Vending Machine/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Vending Machine/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Vending Machine/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/controllers/GameController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/exceptions/InvalidChosenPieceException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/exceptions/InvalidPositionException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/Bishop.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/Board.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/King.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/Knight.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/Pawn.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/Piece.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/PieceFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/PieceType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/Player.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/Queen.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/models/Rook.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Chess/utils/Utils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Cricbuzz/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Design Patterns/Singleton/Singleton.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Design Patterns/Singleton/Singleton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Parking Lot/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/Problem Statement.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/exceptions/InvalidBoardEntityException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/exceptions/InvalidEntityPositionException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/manager/BoardGameManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/manager/DiceManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/models/Board.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/models/BoardEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/models/Dice.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/models/Ladder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/models/Player.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake And Ladder/models/Snake.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/App.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/models/Expense.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/models/Group.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/models/Settlement.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/models/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/repository/ExpenseRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/repository/GroupRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/services/ExpenseService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/services/GroupService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/main/java/com/lld/splitwise/services/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SplitWise/src/test/java/com/lld/splitwise/AppTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2p9kjPb2wtknEymE7Iho0Ba25yi" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="64649b17-20ea-4a16-b899-9bb9c492d8fc" name="Changes" comment="" />
+      <created>1732185813939</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1732185813939</updated>
+      <workItem from="1732185814921" duration="5647000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
