@@ -4,4 +4,3 @@
 - Cricbuzz
 - Stock broker
 - Ecommerce
-- Elevator
