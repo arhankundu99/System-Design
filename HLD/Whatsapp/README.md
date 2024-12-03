@@ -1,13 +1,13 @@
 # Whatsapp
 ## Functional requirements
-- Users should be able to send messages to other users.
-- Users should be able to create a group chat with other users.
-- Users should be able to send media in their messages.
-- Users should be able to send messages even when the recipient is offline. (The recipient would get the message once they are online).
+1. Create user, groups
+2. Message one to one / group message
+3. Send images / videos
 
 ## Non functional requirements
 - Low latency of sending messages
 - Scalable under traffic
+- Remove messages older than 30 days (Clear this up with interviewer)
 
 ## QPS and storage estimations
 - 100 M monthly users
@@ -21,35 +21,48 @@ Storage estimations
 Each message is roughly 20 Bytes in size and media is 200 bytes in size
 Each user sends 560 bytes of data.
 Daily storage = 50 * 10^6 * 560 = 28 * 10^9 = 28 GB / day
-
-Messages to be stored for 1 year = 28 * 30 * 12 = 10 TB
 ```
 
 ## Entities
-- Users
+
+1. user - id, name, email, phone
+2. groups
 ```
-user_id, email, name
+{
+  id,
+  name,
+  participants,
+  img
+}
 ```
 
-- Groups
+3. message
 ```
-group_id, name, user_id
+{
+  id,
+  message,
+  type (text / image / video)
+  from,
+  to (group_id | user_id),
+  is_group,
+  timestamp
+}
+```
 
-group_id, created_by
+4. events
 ```
-
-- Chat
+{
+  id,
+  from,
+  to (user_id),
+  message_id,
+  status (delivered / not delivered)
+}
 ```
-chat_id, group_id, from, message, created_at, updated_at
-```
-
-- Events (chats, creation of group etc)
-```
-event_id, event_desc, to, created_at, status (delivered, not_delivered)
 
 - We would be creating an event for every user.
 - In case a message needs to be sent to every group user, then we would be creating individual events for each user.
-```
+
 
 ## API endpoints
 - POST `/whatsapp/v1/groups` (We can do this via websocket protocol also)
