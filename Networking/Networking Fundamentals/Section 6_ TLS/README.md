@@ -215,3 +215,30 @@ spec:
                   number: 80
 
 ```
+
+## How does TLS resumption work?
+Say the client has done a Client hello with the server. Now the client sends the encrypted premaster to different ingress controller (Ingress controller is distributed).
+
+How does this work? Does the client need to do a full TLS handshake again? But this would eventually result in a loop if the requests go to different ingress pods everytime.
+
+This is where `TLS Session tickets` come in.
+
+```
+🧾 session_ticket = encrypt(session_state, session_ticket_key)
+
+session_ticket_key is only known to the server.
+```
+
+Session ticket in case of RSA key exchange contains
+- The master secret
+- Cipher suite
+- ClientRandom, ServerRandom
+- Other parameters to recreate session keys.
+
+The server sends this encrypted session ticket to the client in the NewSessionTicket message
+
+- The client saves this session ticket locally.
+
+- Now when the client sends the next request, it also sends the session ticket where the ingress controller decrypts and gets the master and the necessary params to decrypt.
+
+- All in all, session tickets are used to make the requests stateless
