@@ -126,7 +126,9 @@ unclean.leader.election = false
 ## Extreme Scenario: All ISR Fail
 
 ### State
+
 `ISR = {}`
+
 ---
 
 ### Case 1: Unclean Leader Election Disabled
@@ -155,4 +157,33 @@ unclean.leader.election = false
 
 #### Result
 
-- Data loss occurs  
+- Data loss occurs
+
+## Configs in production systems
+
+- Production systems don’t use one config for everything. They classify topics like this:
+
+### Common pattern:
+
+Same base config:
+
+```
+replication.factor = 3
+min.insync.replicas = 2
+acks = all
+```
+
+`unclean leader election = false` for critical topics
+
+But:
+
+For less critical / high-availability topics, we may relax:
+
+`unclean.leader.election = true`
+
+| Topic Type        | Config Style          |
+| ----------------- | --------------------- |
+| Payments / Orders | Strict (no data loss) |
+| Logs / Metrics    | Slightly relaxed      |
+| Debug / Analytics | More relaxed          |
+
