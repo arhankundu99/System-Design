@@ -28,7 +28,7 @@ Also refer the mongo design [here](../../Database/Database%20Fundamentals/Mongo%
 acks=all
 min.insync.replicas=2
 ```
-- `acks=all` does not mean kafka broker would wait till all replicas write the data. `acks=all` means it would wait till minimum number of in sync replicas have the same data as leader which is 2 in the above case.
+- `acks=all` does not mean kafka broker would wait till all replicas write the data. `acks=all` means the leader waits for all replicas in the ISR to replicate the record before sending an ACK. So if ISR has 3 partitions, it would wait for 3 partitions to get an ack. If ISR has 2 partitions, then it would wait for 2 partitions to get an ack. If it has one partition, then message is not written.
 
 ### Example
 ```
@@ -187,3 +187,42 @@ For less critical / high-availability topics, we may relax:
 | Logs / Metrics    | Slightly relaxed      |
 | Debug / Analytics | More relaxed          |
 
+## Data loss can occur even if `unclean.leader.election = false`
+
+### Case 1: `acks = 1`
+- Means only the leader write would be acknowledged
+
+```
+t1: Leader writes M1
+t2: ACK sent (acks=1)
+t3: Follower hasn’t fetched M1 yet (but still in ISR)
+t4: Leader crashes
+t5: Follower becomes leader
+```
+
+### Case 2: `acks = all`
+- Now Kafka behaves differently:
+```
+Leader writes M1
+↓
+Waits for ALL ISR replicas to replicate M1
+↓
+Then sends ACK
+
+So:
+
+Leader (R1) → M1
+Follower (R2) → M1
+```
+
+### But in case 1, how come follower is in ISR even if it did not fetch M1 from leader?
+
+#### Key configs controlling ISR behavior
+
+```
+replica.lag.time.max.ms     # time threshold, If a follower does not fetch data from leader within this time, it is removed.
+replica.fetch.max.bytes     # how much it can fetch
+replica.fetch.wait.max.ms   # fetch wait time
+```
+
+Based on `replica.lag.time.max.ms` there would be this window when follower can be in ISR even if it does not match with leader.
