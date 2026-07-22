@@ -226,3 +226,18 @@ replica.fetch.wait.max.ms   # fetch wait time
 ```
 
 Based on `replica.lag.time.max.ms` there would be this window when follower can be in ISR even if it does not match with leader.
+
+## How subscribers commit offsets
+### 1. Auto-Commit (The Periodic Approach)
+By default, Kafka consumers are configured to commit offsets automatically (`enable.auto.commit=true`). 
+
+*   **How it works:** A background thread in the consumer checks a timer based on the `auto.commit.interval.ms` property (which defaults to 5 seconds). If the interval has passed, the consumer commits the largest offset it returned in the last `poll()` request.
+*   **The Risk:** If your consumer pulls a batch of messages, auto-commits the offset in the background, and then crashes *before* fully processing that batch, those messages are lost to your application. When the consumer restarts, it will read from the newly committed offset, skipping the unprocessed data.
+
+### 2. Manual Commit (The Event-Driven Approach)
+Because of the data loss risks associated with background auto-commits, production systems handling critical data usually disable auto-commits (`enable.auto.commit=false`). 
+
+Instead, the application explicitly tells Kafka when to commit offsets using manual API calls (`commitSync()` or `commitAsync()`).
+
+*   **How it works:** You process the batch of data (e.g., writing it to a database or triggering an alert), and *only then* do you manually commit the offset. 
+*   **The Advantage:** This guarantees **at-least-once delivery**. If the consumer crashes halfway through processing a batch, the offset is never committed. Upon restart, the consumer will fetch the same batch again.
