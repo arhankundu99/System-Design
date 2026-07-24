@@ -156,8 +156,25 @@ Normally in rate limited responses, these headers are added:
 ```
 
 ## Detailed design
-![detailed_design](images/detailed%20design.png)
+![detailed design](images/Rate%20Limiter%20Design.png)
 
+## Questions
+
+### Why storage and workers instead of admins directly uploading to redis?
+
+#### Pros
+- Redis also has WAL and we can configure redis to take periodic snapshots so that data can be constructed in case redis cluster goes down.
+- Uploading to redis directly is more faster than to upload it to a bucket and then workers uploading the new rules to redis.
+
+#### Cons
+- No tracking of changes of configuration files (Big drawback!)
+- We can create a PR for the configuration files and someone can review it. The configuration files would be uploaded to buckets via pipelines.
+- Revert changes easily in case the new config files cause issues
+
+## Better design (Without storage buckets)
+![detailed design](images/Rate%20Limiter%20Design%20Without%20Storage.png)
+
+Here, we directly upload the rules to redis instead of storage in middle while we maintain the same tracking of the configuration files through our repo. The pipeline validates and parses the rules, calls the admin api to upload the rules in redis and when it returns 200, the pipeline succeeds. If the admin service is down, trigger the same pipeline again when the service is up.
 
 ## Problems in distributed environment
 - In single cluster, this would work fine. But if there are multiple rate limiting servers, we have to take care of `race condition`.
