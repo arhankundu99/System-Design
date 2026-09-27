@@ -142,7 +142,14 @@ But why not only use the IP address instead of the mac address as IP addresses a
   - If the communication was with IP address and not mac address, each device would be attempting to decrypt the IP packet using their key and if the decryption fails, then drop the packet. This is a very CPU intensive task of running the decryption on every single frame.
   - And suppose the device A wants to send a packet to device B in the same network. Device A encrypts the packet with destination MAC address (DA) as device B MAC address, destination IP address as device B IP address, but the reciever MAC address (RA) is set to router MAC address. Router receives the packet and decrypts it with device A key and sees that the packet has to be sent to device B using the DA (Destination mac address) of device B in the packet and encrypts it again with device B's key and is transmitted to device B using switch.
   - The switch contains mapping table between mac addresses and the ports (eth0, eth1 etc for ethernet and wan0. wan1 etc for wifi). The switch uses this table for routing packets to correct mac addresses.
-
+```
+MAC Address           Interface / Port
+---------------------------------------
+00:1a:2b:3c:4d:5e     eth1  (Wired PC)
+f4:d4:88:51:6e:02     eth2  (Smart TV)
+a4:c3:f0:12:34:56     wlan0 (Your Phone on Wi-Fi)
+b8:27:eb:aa:bb:cc     wlan0 (Laptop on Wi-Fi)
+```
  
 
 ### Network address tranlation (NAT) table
