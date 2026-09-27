@@ -92,7 +92,58 @@ IP address is allocated to a device when the device connects to a network and th
 
 ### IP Addresses are used to find the network and mac addresses are used to find the device within the network
 
-But why not only use the IP address instead of the mac address as IP addresses are also unique? Because IP addresses can change dynamically. Let's say we only use IP addresses to send messages between device 1 and device 3 and now if the IP address gets swapped between device 2 and device 3, then it becomes a problem.
+But why not only use the IP address instead of the mac address as IP addresses are also unique? 
+
+- Suppose there are devices A and B in the same wifi network
+- The data shared between device A and the wifi network is encrypted using a unique key which only device A and wifi router has. Similar is the case with device B and wifi router.
+- But when the packet has to be routed to global internet, the packet is decrypted. The main reason for this encryption from device to router is to protect the destination IP addresses from eavesdroppers sitting in the same room. (Wi-Fi encryption was primarily introduced because plain HTTP, raw DNS, email protocols (POP3/IMAP/SMTP), and LAN discovery protocols were unencrypted by default)
+- When an incoming IP packet arrives from the Internet via Ethernet/fiber, it is unencrypted IP. The router looks at the destination IP, uses its ARP table to find Device A's MAC address (AA:BB:CC:...), selects Device A's key, encrypts the IP packet, prepends the cleartext MAC header (6 bytes), and transmits it over the air.
+- When the Wi-Fi router transmits a frame to Device A, its antennas emit electromagnetic waves in a 360-degree pattern
+```
+                                (( Radio Waves ))
+                                     .-'""'-.
+                                   .'  .-.   '.
+                                  /   /   \    \
+        [ Device B (Phone) ] <── │   [Router]   │ ──> [ Device A (Laptop) ]
+                                  \   \   /    /
+                                   '.  '-'   .'
+                                     '-....-'
+                                        │
+                                        ▼
+                             [ Device C (Smart TV) ]
+```
+  - The electromagnetic waves pass through the air and strike the copper antenna traces of Device A, Device B, Device C, and even a neighbor’s device through the wall.
+  - In every one of those devices, the incoming wave induces a tiny alternating electric current in the physical antenna.
+  - At the physical layer (Layer 1), there is no concept of "this wave belongs to A." Every antenna in range physically receives the signal.
+  - Because every device physically receives the frame, the Network Interface Card (NIC) silicon must decide whether to process it or throw it away.
+ ```                
+                                           Incoming Radio Burst
+                                                    │
+                                                    ▼
+                                       [ RF Front-End & Demodulator ]
+                                                    │
+                                                    ▼
+                                         Read first 32–40 bytes
+                                         (802.11 Header in CLEAR)
+                                                    │
+                                                    ▼
+                                       [ Hardware MAC Address Filter ]
+                                                    │
+                              ┌─────────────────────┴─────────────────────┐
+                              │                                           │
+                      Matches My MAC                              Does NOT Match
+                      (Device A)                                  (Device B)
+                              │                                           │
+                              ▼                                           ▼
+                    Fetch PTK decryption key                      FLUSH FROM BUFFER
+                    Run AES-CCMP/GCMP in hardware                 (Zero CPU wake-up)
+                    Pass cleartext IP packet to OS kernel         (Power state untouched)
+```
+  - If the communication was with IP address and not mac address, each device would be attempting to decrypt the IP packet using their key and if the decryption fails, then drop the packet. This is a very CPU intensive task of running the decryption on every single frame.
+  - And suppose the device A wants to send a packet to device B in the same network. Device A encrypts the packet with destination MAC address (DA) as device B MAC address, destination IP address as device B IP address, but the reciever MAC address (RA) is set to router MAC address. Router receives the packet and decrypts it with device A key and sees that the packet has to be sent to device B using the DA (Destination mac address) of device B in the packet and encrypts it again with device B's key and is transmitted to device B using switch.
+  - The switch contains mapping table between mac addresses and the ports (eth0, eth1 etc for ethernet and wan0. wan1 etc for wifi). The switch uses this table for routing packets to correct mac addresses.
+
+ 
 
 ### Network address tranlation (NAT) table
 Also the wifi router maintains <b>Network Address Translation</b> table. Now when a message is to be sent to an external network, the device sends the message to the router. The router then changes the source IP, source port, source mac of the packet to the router's public IP, port and mac and then routes to another router. (Because we cant just communicate with the internet using the private IP addresses)
