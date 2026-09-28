@@ -4,7 +4,7 @@
 
 ![What is OSI Model](./images/What%20is%20OSI%20Model.png)
 
-Layer 6 - Presentation is all about encoding and serialization. For eg., sending json payload: This needs to be converted to string and can be encoded also to utf-8 for example.
+Layer 6 - Presentation is all about encoding and serialization. For eg., Serialising or Deserialising JSON or protocol buffers
 
 ![The OSI Layers - an example (Sender)](images/osi_sender_example.png)
 
@@ -22,8 +22,6 @@ Layer 6 - Presentation is all about encoding and serialization. For eg., sending
 
 
 The above images depict how the data travels through the layers from client to server. In my point of view, Presentation and Session layer also can be included in the application layer. 
-
-Session layer deals with maintaining sessions like using auth tokens for requests etc.
 
 ![Alt text](images/switch_router.png)
 ![Alt text](images/firewall_LB_CDN.png)
@@ -140,8 +138,27 @@ But why not only use the IP address instead of the mac address as IP addresses a
                     Pass cleartext IP packet to OS kernel         (Power state untouched)
 ```
   - If the communication was with IP address and not mac address, each device would be attempting to decrypt the IP packet using their key and if the decryption fails, then drop the packet. This is a very CPU intensive task of running the decryption on every single frame.
-  - And suppose the device A wants to send a packet to device B in the same network. Device A encrypts the packet with destination MAC address (DA) as device B MAC address, destination IP address as device B IP address, but the reciever MAC address (RA) is set to router MAC address. Router receives the packet and decrypts it with device A key and sees that the packet has to be sent to device B using the DA (Destination mac address) of device B in the packet and encrypts it again with device B's key and is transmitted to device B using switch.
-  - The switch contains mapping table between mac addresses and the ports (eth0, eth1 etc for ethernet and wan0. wan1 etc for wifi). The switch uses this table for routing packets to correct mac addresses.
+  - And suppose Device A wants to send a packet to Device B on the same network. Device A constructs a frame where the cleartext MAC header contains:
+    ```
+    Transmitter Address (TA): Device A's MAC address
+    
+    Receiver Address (RA): Router/AP's MAC address
+    
+    Destination Address (DA): Device B's MAC address
+    ```
+    The payload—containing the Layer 3 IP packet (Destination IP: Device B) and upper-layer data is encrypted using Device A's pairwise session key (Key A). The router's radio receives the frame (matching its MAC as RA), uses TA to select     Key A, and decrypts the payload.
+    ```
+    ┌────────────────────────────────────────────────────────┬──────────────────────────────────────────┐
+    │              CLEARTEXT 802.11 MAC HEADER               │            ENCRYPTED PAYLOAD             │
+    ├────────────────────┬────────────────────┬──────────────┼──────────────────────────────────────────┤
+    │ Address 1 (RA)     │ Address 2 (TA)     │ Address 3    │ Encrypted with Key A (AES-CCMP / GCMP):  │
+    │ = Router MAC       │ = MAC_A            │ = MAC_B (DA) │ [ IPv4/IPv6 Header | TCP/UDP | Data ]    │
+    └────────────────────┴────────────────────┴──────────────┴──────────────────────────────────────────┘
+    ```
+  - The router's internal bridge/switch inspects the cleartext DA (Device B's MAC), consults its CAM table, and identifies that Device B is associated with its wireless interface.
+  - The router constructs a new downlink frame: `Cleartext Header: RA = Device B MAC, TA = Router MAC, DA = Device B MAC (or SA = Device A MAC)` and `Payload: Re-encrypted using Device B's pairwise session key (Key B)`
+  - 
+  - The switch contains mapping table between mac addresses and the ports (eth0, eth1 etc for ethernet and wlan0. wlan1 etc for wifi). The switch uses this table for routing packets to correct mac addresses.
 ```
 MAC Address           Interface / Port
 ---------------------------------------
@@ -150,7 +167,24 @@ f4:d4:88:51:6e:02     eth2  (Smart TV)
 a4:c3:f0:12:34:56     wlan0 (Your Phone on Wi-Fi)
 b8:27:eb:aa:bb:cc     wlan0 (Laptop on Wi-Fi)
 ```
- 
+
+### Monitor mode to capture frames
+To capture over-the-air packets not intended for our device's MAC address, the wireless interface must be placed into monitor mode, which disables the hardware's address filter; however, because standard Windows Wi-Fi drivers restrict this capability, achieving true monitor mode typically requires connecting a specialized external USB Wi-Fi adapter with chipset and driver support for raw 802.11 packet capture.
+
+### IEEE 802.11 (Wi-Fi)
+
+**IEEE 802.11** is the formal technical standard defined by the Institute of Electrical and Electronics Engineers (IEEE) that specifies how wireless local area networking works.
+
+In everyday language, **802.11** is the technical name for **Wi-Fi**.
+
+#### 1. Where Does the Name Come From?
+
+* **802:** The IEEE committee responsible for Local Area Network (LAN) and Metropolitan Area Network (MAN) standards (formed in February 1980, hence `80.2`).
+  * **802.3:** Wired Ethernet
+  * **802.15:** Wireless Personal Area Networks (e.g., Bluetooth is `802.15.1`, Zigbee is `802.15.4`)
+* **.11:** The specific working group assigned to define Wireless LAN (WLAN).
+
+> **Note:** The commercial brand name **"Wi-Fi"** was introduced in 1999 by the Wi-Fi Alliance (a trade association) because *"IEEE 802.11b Direct Sequence"* was not consumer-friendly for marketing.
 
 ### Network address tranlation (NAT) table
 Also the wifi router maintains <b>Network Address Translation</b> table. Now when a message is to be sent to an external network, the device sends the message to the router. The router then changes the source IP, source port, source mac of the packet to the router's public IP, port and mac and then routes to another router. (Because we cant just communicate with the internet using the private IP addresses)
