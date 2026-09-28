@@ -299,7 +299,13 @@ Hardware MAC Address Filter
              Parse ARP Payload: Target IP
 ```
 
-Because the destination is ff:ff:ff:ff:ff:ff, the hardware filters on both Host B and Host C accept the frame and interrupt their operating system kernels. Both OS kernels parse the ARP payload and look at the Target IP Address (TPA):Host C (192.168.1.50): Checks its IP. $192.168.1.50 \neq 192.168.1.25$. It silently drops the packet.Host B (192.168.1.25): Checks its IP. $192.168.1.25 == 192.168.1.25$. Match found!
+- Because the destination is ff:ff:ff:ff:ff:ff, the hardware filters on both Host B and Host C accept the frame and interrupt their operating system kernels.
+- Both OS kernels parse the ARP payload and look at the Target IP Address (TPA):Host C (192.168.1.50): Checks its IP. $192.168.1.50 \neq 192.168.1.25$.
+- It silently drops the packet.Host B (192.168.1.25): Checks its IP. $192.168.1.25 == 192.168.1.25$. Match found!
+
+#### The ARP Reply (Unicast, Not Broadcast)
+- Host B does not broadcast its answer. Because it already learned Host A’s MAC address from the request payload, Host B sends a direct, targeted unicast response
+- The switch receives this reply on Port 3, notes Host B's MAC in its CAM table, checks its CAM table for Host A's MAC, and forwards the reply exclusively out of Port 1. Host C never sees the reply.
 
 Different network routing
 ![diff_network_arp_1](images/diff_network_arp_1.png)
