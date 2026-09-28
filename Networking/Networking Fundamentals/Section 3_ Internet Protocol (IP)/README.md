@@ -129,6 +129,47 @@ Identifier: This matches the identifier in the Echo Request, helping to correlat
 - Sequence Number: Matches the sequence number of the Echo Request to pair responses with requests.
 - Data: The same data sent in the Echo Request is usually returned in the Echo Reply, allowing the sender to verify the integrity of the data received.
 
+ICMP Anatomy
+```
+Echo request example
+┌────────────────────────────────────────────────────────────────────────┐
+│                        OUTER IP HEADER (20 Bytes)                      │
+│  - Source IP Address:      192.168.1.50                                │
+│  - Destination IP Address: 8.8.8.8                                     │
+│  - Protocol Field:         1 (meaning ICMP)                            │
+├────────────────────────────────────────────────────────────────────────┤
+│                          ICMP HEADER (8 Bytes)                         │
+│  - Type (e.g., Type 8 = Echo Request / Ping)                           │
+│  - Code (e.g., Code 0)                                                 │
+│  - Checksum                                                            │
+│  - Identifier & Sequence Number                                        │
+├────────────────────────────────────────────────────────────────────────┤
+│                               ICMP PAYLOAD                             │
+│  - Timestamp, padding bytes (e.g., "abcdefgh...")                      │
+└────────────────────────────────────────────────────────────────────────┘
+
+Echo reply example
+┌────────────────────────────────────────────────────────────────────────┐
+│                      OUTER IP HEADER (Reporting Router)                │
+│  - Source IP:      142.250.x.x  (Router that dropped the packet)       │
+│  - Destination IP: 192.168.1.50 (Your original sending host)           │
+│  - Protocol:       1 (ICMP)                                            │
+├────────────────────────────────────────────────────────────────────────┤
+│                        ICMP HEADER (Type 11: Time-to-Live Exceeded)    │
+├────────────────────────────────────────────────────────────────────────┤
+│                         ICMP DATA / ERROR PAYLOAD                      │
+│                                                                        │
+│   ┌────────────────────────────────────────────────────────────────┐   │
+│   │ ORIGINAL IP HEADER (The packet that caused the error)          │   │
+│   │ - Original Source IP:      192.168.1.50                        │   │
+│   │ - Original Destination IP: 8.8.8.8                             │   │
+│   ├────────────────────────────────────────────────────────────────┤   │
+│   │ First 8 Bytes of Original Payload (Original TCP/UDP ports)     │   │
+│   └────────────────────────────────────────────────────────────────┘   │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+
 
 Additional Information
 - Size: The size of the ICMP packet can be adjusted in the ping command. The default size of the data payload is 32 bytes in Windows and 56 bytes in Unix-like systems, leading to a total ICMP packet size of 64 bytes in Windows and 84 bytes in Unix-like systems when considering the ICMP header and data.
@@ -184,15 +225,81 @@ Host 2 now needs the mac address of Host 5, Host 2 checks its ARP tables (In the
 
 Now Host 2 sends a broadcast request to all machines in the network saying "Who has the ip address of 5?" and all the machines get this message since it is a broadcast message (The broadcast mac address is used in this case: `ff:ff:ff:ff:ff:ff` since ARP is a layer 2 protocol and not the broadcast IP address). 
 
-Now host 5 replies back with its mac address to host 2 (This is a unicast message and Note here ARP poisoning can also happen. Suppose host 3 replies with its mac address right? Then it would be a problem). Now Host 2 stores the mac address in its ARP cache and now constructs the frame.
+The frame looks like this
 
-After it constructs the frame, it sends it to the switch (Switch is a layer 2 application and most modern routers come with a switch) and then the switch forwards it to the correct device.
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                                 ETHERNET FRAME HEADER                                  │
+├──────────────────────────────┬──────────────────────────────┬──────────────────────────┤
+│ Destination MAC:             │ Source MAC:                  │ EtherType:               │
+│ ff:ff:ff:ff:ff:ff (Broadcast)│ 00:11:22:33:44:aa (Host A)   │ 0x0806 (ARP Protocol)    │
+└──────────────────────────────┴──────────────────────────────┴──────────────────────────┘
+│
+▼
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                                    ARP PACKET PAYLOAD                                  │
+├─────────────────────────────────────────────┬──────────────────────────────────────────┤
+│ Hardware Type: Ethernet (1)                 │ Protocol Type: IPv4 (0x0800)             │
+├─────────────────────────────────────────────┼──────────────────────────────────────────┤
+│ Hardware Size: 6 bytes                      │ Protocol Size: 4 bytes                   │
+├─────────────────────────────────────────────┼──────────────────────────────────────────┤
+│ Opcode: 1 (ARP Request)                     │                                          │
+├─────────────────────────────────────────────┼──────────────────────────────────────────┤
+│ Sender MAC Address (SHA):                   │ Sender IP Address (SPA):                 │
+│ 00:11:22:33:44:aa                           │ 192.168.1.10                             │
+├─────────────────────────────────────────────┼──────────────────────────────────────────┤
+│ Target MAC Address (THA):                   │ Target IP Address (TPA):                 │
+│ 00:00:00:00:00:00 (Blank / Unknown)         │ 192.168.1.25 (Host B)                    │
+└─────────────────────────────────────────────┴──────────────────────────────────────────┘
 
-Now let's say the device with IP 5 has been disconnected.
+In the Ethernet Header, the destination MAC is set to ff:ff:ff:ff:ff:ff (all 48 bits set to $1$).
 
-- Now when device with IP 2 wants to send a message, It will look in its ARP cache and get the mac address of IP 5 (Note that the ARP cache also has a ttl and assume that the ttl has not expired). The frame gets constructed and sent to switch. But the switch is now unable to find the mac address. So now after a timeout period, the device with IP 2 gets error that destination is unreachable and updates its ARP cache.
+In the ARP Payload, the Target MAC Address is set to 00:00:00:00:00:00 because it is unknown.
+```
 
-- When the same device gets connected, but now with different IP. And another new device gets connected with the same IP of the previous device which is 5. In this case, when device wants to send a message to the new device (Assumng that the ARP cache has not been expired), then it sends the message to previous device with IP 5 (Because the mac address still points to the previous device), But at Layer 3, there is a mismatch between IP addresses and it does not send a reply. So now device 1 would invalidate the ARP cache and again send an ARP broadcast request if needed.
+#### How the Switch Treats `ff:ff:ff:ff:ff:ff`
+When the frame leaves Host A's network interface, it travels into the switch port:
+```
+            [ Host A ] (192.168.1.10)
+                      │  Sends ARP: Dst = ff:ff:ff:ff:ff:ff
+                      ▼
+               ┌──────────────┐
+               │ Switch Port 1│
+               └──────┬───────┘
+                      │
+     ┌────────────────┼────────────────┐
+     │ Switch Floods to all Ports      │
+     ▼                                 ▼
+┌──────────────┐                ┌──────────────┐
+│ Switch Port 2│                │ Switch Port 3│
+└──────┬───────┘                └──────┬───────┘
+       │                               │
+       ▼                               ▼
+  [ Host C ]                      [ Host B ] (192.168.1.25)
+(192.168.1.50)
+```
+
+#### How Receiving Device NICs Handle the Broadcast
+The frame strikes the physical network cards of both Host B and Host C:
+```
+Frame hits NIC Transceiver
+          │
+          ▼
+Hardware MAC Address Filter
+"Is Destination MAC == My MAC OR ff:ff:ff:ff:ff:ff?"
+          │
+          ├── NO  ──> Discard instantly in hardware (Zero CPU impact)
+          └── YES ──> Passed up!
+                         │
+                         ▼
+             OS Network Driver / Kernel
+             Inspect EtherType: 0x0806 (ARP)
+                         │
+                         ▼
+             Parse ARP Payload: Target IP
+```
+
+Because the destination is ff:ff:ff:ff:ff:ff, the hardware filters on both Host B and Host C accept the frame and interrupt their operating system kernels. Both OS kernels parse the ARP payload and look at the Target IP Address (TPA):Host C (192.168.1.50): Checks its IP. $192.168.1.50 \neq 192.168.1.25$. It silently drops the packet.Host B (192.168.1.25): Checks its IP. $192.168.1.25 == 192.168.1.25$. Match found!
 
 Different network routing
 ![diff_network_arp_1](images/diff_network_arp_1.png)
