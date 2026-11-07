@@ -1,5 +1,8 @@
 # Job Triggering Service
 
+## Take away: 
+When you have to design a component which processes requests async, the component should return an id (Which is used to correlate when the request is completed async) along with other details as a response. The component may then process the request by submitting it into a queue and a consumer may process those requests from the queue accordingly and store the results in db. Good practice to have apis exposed for getting a particular job details.
+
 ## Problem statement
 You have a job training service which takes job details, model name, dataset (Already uploaded / predefined) and it triggers the jobs. You need to create a job triggering service which users would use to trigger a job.
 
@@ -57,4 +60,8 @@ Response: { id, name, status: CANCELLING }
 
 <img width="1708" height="802" alt="image" src="https://github.com/user-attachments/assets/23642269-cb4b-4bf0-ae78-daae5979773c" />
 
+## Other points
 
+1. The job training service exposes apis to get particular job details. Which means job training service is the source of truth.
+2. If eventual consistency is accepted, the job triggering service makes a call to job training service and stores those details in databases like redis with ttl.
+3. In case, we want to send notifications to user, the job training service can send the status update to the queue, the consumer would then invalidate the cache, update with new status updates and call the notification service.
