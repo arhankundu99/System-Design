@@ -122,5 +122,6 @@ COMMIT;
 ```
 
 ## VM Allocation Service
-![hld_2](images/hld_2.png)
+<b> Note: Refer to the Job Triggering Service Design in HLD for details on how to handle updates from VM Allocation Service.</b>
+![Final Design](images/VM%20Allocation%20Service.png)
 
