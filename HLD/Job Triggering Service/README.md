@@ -54,14 +54,14 @@ Response: { id, name, status: CANCELLING }
 
 ## Design
 
-<img width="1398" height="917" alt="image" src="https://github.com/user-attachments/assets/924cead0-b211-44c0-addc-d5e62abc9878" />
+![Design 1](images/image.png)
 
-<img width="1332" height="850" alt="image" src="https://github.com/user-attachments/assets/1381823e-f4b5-4459-ab7b-efda77d94593" />
+![Design 2](images/image%202.png)
 
-<img width="1396" height="603" alt="image" src="https://github.com/user-attachments/assets/4233423b-d15a-4f78-bbe0-96d77f02f43c" />
+![Design 3](images/image%203.png)
 
 
-## Other points
+## Some points
 
 1. The job training service exposes apis to get particular job details. Which means job training service is the source of truth.
 2. If eventual consistency is accepted, the job triggering service makes a call to job training service and stores those details in databases like redis with ttl.
