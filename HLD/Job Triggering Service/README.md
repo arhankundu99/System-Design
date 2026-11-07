@@ -54,11 +54,12 @@ Response: { id, name, status: CANCELLING }
 
 ## Design
 
-<img width="1460" height="988" alt="image" src="https://github.com/user-attachments/assets/9da851eb-579b-4bc1-a22a-606bc6971357" />
+<img width="1398" height="917" alt="image" src="https://github.com/user-attachments/assets/924cead0-b211-44c0-addc-d5e62abc9878" />
 
 <img width="1332" height="850" alt="image" src="https://github.com/user-attachments/assets/1381823e-f4b5-4459-ab7b-efda77d94593" />
 
-<img width="1708" height="802" alt="image" src="https://github.com/user-attachments/assets/23642269-cb4b-4bf0-ae78-daae5979773c" />
+<img width="1396" height="603" alt="image" src="https://github.com/user-attachments/assets/4233423b-d15a-4f78-bbe0-96d77f02f43c" />
+
 
 ## Other points
 
