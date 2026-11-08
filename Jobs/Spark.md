@@ -24,7 +24,20 @@ The above code
 - Stores the results in a data warehouse (like Hive or Redshift).
 
 ### Streaming
-Streaming jobs process the data as it arrives in real time.
+Spark Structured Streaming processes streams as micro-batches of data (Not event by event).
+
+#### Micro-batches and offset tracking
+- A micro-batch processes a range of new events. For example,  `.trigger(processingTime="5 seconds")` schedules a batch every five seconds. If processing takes longer, the next batch starts when the previous one finishes, not exactly every five seconds.
+
+- Spark uses the record offsets that Kafka provides. Each offset identifies a record’s position within a particular topic partition. Spark selects a separate offset range for each partition
+
+- Spark processes those ranges and writes the results. Parsing, filtering, and other transformations execute against the events in the microbatch, potentially in parallel.
+
+- Spark saves its progress in its own checkpoint directory. The directory can be in durable storage such as an Azure Storage account. It contains offset logs describing what to process and completion logs recording which batches finished.
+
+- Spark does not commit consumer offsets back to Kafka. It uses Kafka’s record offsets to read data, but uses its own checkpoint and not Kafka’s saved consumer group offsets to track recovery progress.
+
+- After a restart, Spark uses the same checkpoint to recover.
 
 ```python
 df = spark.readStream.format("kafka")\
@@ -43,8 +56,51 @@ fraud_alerts.writeStream\
 ```
 The above code shows an example to detect fradulent transactions in real time.
 
+### Example of spark streaming and batch job in production
+- Spark streaming job processes events from event hub in micro-batches.
+- It writes the results in parquet files in a storage account.
+- The streaming job then commits the offsets after its processing in its configured storage and reads the next micro batch of events using those offsets stored.
+- A pipeline is configured in ADF (Azure data factory). That pipeline selects the parquet files in a time window (May be 30 mins), merges the parquet files in a single temporary parquet file and starts the batch job with the merged parquet file.
+- The batch job then processes the parquet file and ingests into db in bulk.
+- The pipeline again continues the same process for next time window.
+
+### Parquet files
+Parquet is a file format for storing structured data efficiently for analytics. Its key feature is column-oriented storage.
+
+#### Example: online store purchases
+
+
+| orderId | product | quantity | price |
+|---|---|---|---|
+| O1 | Laptop | 1 | 900.00 |
+| O2 | Mouse | 2 | 25.00 |
+| O3 | Laptop | 1 | 900.00 |
+
+**CSV stores the records row by row:**
+
+```csv
+orderId,product,quantity,price
+O1,Laptop,1,900.00
+O2,Mouse,2,25.00
+O3,Laptop,1,900.00
+```
+
+**Parquet groups values by column within chunks of rows. Conceptually:**
+
+```text
+orderId:  [O1, O2, O3]
+product:  [Laptop, Mouse, Laptop]
+quantity: [1, 2, 1]
+price:    [900.00, 25.00, 900.00]
+```
+
+**Why is this useful?**
+
+- To calculate total revenue, a query can read only `quantity` and `price`, without loading `orderId` or `product`.
+- Repeated values, such as `Laptop` and `900.00`, can be encoded and compressed efficiently.
+
 ## A spark job = A computation that spark runs
-- Batch jobs can run once or on a schedule (via cron, airflow) etc.
+- Batch jobs can run once or on a schedule (For eg., via ADF).
 - Streaming jobs run continuously as they need to process data in real time.
 
 ## Simple analogy
@@ -60,108 +116,59 @@ The above code shows an example to detect fradulent transactions in real time.
     --master yarn \
     --deploy-mode cluster \
     --driver-memory 4g \
-    --executor-memory 8g \
+    --executor-memory 8g \ 
     --executor-cores 4 \
     --num-executors 10 \
     your_script.py
     ```
-- YARN creates a container for <b>Driver</b> and multiple containers for <b>Executors</b>.
+- In the above command, we are requesting the driver memory to be 4 gb, memory of each executor to be 8 gb, number of cores for each executor to be 4 and total number of executors to be 10.
 
-- The driver gets started. The driver is the brain of the application. It parses our spark code, builds a DAG (Directed acyclic graph) and coordinates execution.
+-  Submit the application using  spark-submit .
+The command selects YARN and cluster deployment mode.
+2. YARN starts the driver.
+3. YARN’s ResourceManager allocates resources for executors.
+4. Executors start and register with the driver. The driver coordinates its executors directly.
+5. The driver runs the application and builds plans.
+It executes the main program. Spark transformations such as filter() and select()  describe computations rather than immediately executing them. An action such as count(), collect(), or a write triggers execution.
+6. The driver’s schedulers send tasks to executors. Executors process data partitions in parallel.
+7. Executors report completion to the driver.
+8. Resources are released when the application ends.
 
-- Driver Requests Resources from YARN
 
-- YARN Allocates Resources:
-Once resources are available, YARN will provide details about the containers where the executors will run.
+Example of spark transformations
+```python
+from pyspark.sql import SparkSession, functions as F
 
-- Driver Receives Resource Details of the executors.
+spark = SparkSession.builder.appName("CachingExample").getOrCreate()
 
-- Driver Divides Tasks and Sends to Executors (Via SparkContext obj, explained below)
-- Executors Execute Tasks
-- Results are Collected by Driver (SparkContext).
-- Tasks are completed and resources are released by YARN.
+# Describe five orders with amounts: 0, 100, 200, 300, 400.
+orders = spark.range(5).select(
+    F.col("id").alias("order_id"),
+    (F.col("id") * 100).alias("amount")
+)
 
-## SparkContext
-- SparkContext is a spark object which is created by the Spark driver process.
-- SparkContext is responsible for 
+# Transformations: describe the computation, but do not execute it.
+expensive_orders = (
+    orders
+    .filter(F.col("amount") >= 200)
+    .select("order_id", "amount")
+)
+
+# Mark this result for caching; no computation yet.
+expensive_orders.cache()
+
+# First action: compute the result and populate its cache.
+print(expensive_orders.count())  # 3
+
+# Another action: reuse the cached rows to calculate total revenue.
+total = expensive_orders.agg(
+    F.sum("amount").alias("total")
+).first()
+
+print(total["total"])  # 900
+
+# Release the cached data when it is no longer needed.
+expensive_orders.unpersist()
+
+spark.stop()
 ```
-1. Connecting to resource manager like YARN to request resources.
-
-2. Launching and scheduling tasks on executor nodes.
-
-3. Coordinating distributed data processing (by managing RDDs, broadcasting variables etc)
-
-4. Once the job is done, SparkContext obj manages stopping and cleanup of the executors
-```
-
-## RDD (Resilient distributed dataset)
-
-- RDDs are collection of elements that can be operated on parallel.
-
-### First we create a spark context
-```scala
-val conf = new SparkConf().setAppName(appName).setMaster(master)
-new SparkContext(conf)
-
-// Master is a Spark, Mesos or YARN cluster URL
-```
-
-### Then we can create RDDs
-
-```scala
-val data = Array(1, 2, 3, 4, 5)
-val distData = sc.parallelize(data)
-
-// distData is a RDD made using sparkContext (sc). Now operations on distData can be executed on parallel
-
-distData.reduce((a, b) => a + b) // This will be executed in parallel.
-
-Normally SparkContext tries to setup the number of partitions according to the cluster, but we can also specify number of partitions
-
-// distData = sc.parallelize(data, 10) where 10 is the number of partitions.
-
-// We can also read files using RDDs
-val distFile = sc.textFile("data.txt")
-```
-
-## RDD operations
-- RDDs support two types of operations: 
-
-```
-Transformations: Which create a new dataset from an existing one. Eg: Map
-
-Actions: Which return a value to the driver program after running a computation on the dataset. Eg: Reduce
-```
-
-- All transformations in Spark are lazy (they do not compute their results right away. Instead, they just remember the transformations applied to some base dataset (e.g. a file)).
-
-- The transformations are only computed when an action requires a result to be returned to the driver program (Handled by sparkContext in driver program). This enables Spark to run more efficiently.
-
-
-```scala
-val lines = sc.textFile("data.txt")
-val lineLengths = lines.map(s => s. length) 
-// Spark Driver just creates a DAG till here. (For eg., lineLengths -> lines)
-
-
-val totalLength = lineLengths.reduce((a, b) => a + b)
-// Reduce is an action, now sparkContext object in the driver would divide the tasks of map and reduce among the executors.
-
-// Executors then return the results to the driver.
-```
-
-- We can also persist a RDD if it can be used in another actions. 
-
-
-```scala
-val lines = sc.textFile("data.txt")
-val lineLengths = lines.map(s => s. length) 
-
-lineLengths.persist() // persist in memory, we have the option to persist in disk also, The results would be persisted in the executor nodes.
-
-val totalLength = lineLengths.reduce((a, b) => a + b)
-
-
-NOTE: The persist is called before the reduce action, if the persist was called after, then it would NOT be persisted because lineLengths computation would be flushed from memory of the executors once the reduce function is run.
-```
-
