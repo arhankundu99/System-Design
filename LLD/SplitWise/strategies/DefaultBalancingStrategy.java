@@ -60,12 +60,12 @@ public class DefaultBalancingStrategy implements IBalancingStrategy {
     }
 
     @Override
-    public List<Payment> getPendingPaymentsForUser(User user) {
-        List<Payment> userPendingPayments = new ArrayList<>();
+    public List<Payment> getNetPaymentsForUser(User user) {
+        List<Payment> userNetPayments = new ArrayList<>();
         Map<User, Double> userNetBalanceMap = new HashMap<>();
 
-        for (List<Payment> pendingPayments : groupToPendingPaymentsMap.values()) {
-            for (Payment payment : pendingPayments) {
+        for (List<Payment> payments : groupToPaymentsMap.values()) {
+            for (Payment payment : payments) {
                 if (payment.getFromUser().equals(user)) {
                     userNetBalanceMap.put(payment.getToUser(),
                             userNetBalanceMap.getOrDefault(payment.getToUser(), 0.0) + payment.getAmount());
@@ -80,21 +80,21 @@ public class DefaultBalancingStrategy implements IBalancingStrategy {
             User otherUser = entry.getKey();
             double netAmount = entry.getValue();
             if (netAmount > 0) {
-                userPendingPayments.add(new Payment(user, otherUser, netAmount));
+                userNetPayments.add(new Payment(user, otherUser, netAmount));
             } else if (netAmount < 0) {
-                userPendingPayments.add(new Payment(otherUser, user, -netAmount));
+                userNetPayments.add(new Payment(otherUser, user, -netAmount));
             }
         }
-        return userPendingPayments;
+        return userNetPayments;
     }
 
     @Override
-    public List<Payment> getPendingPaymentsForUsers(User user1, User user2) {
-        List<Payment> userPendingPayments = new ArrayList<>();
+    public List<Payment> getNetPaymentsForUsers(User user1, User user2) {
+        List<Payment> userNetPayments = new ArrayList<>();
         Map<User, Double> userNetBalanceMap = new HashMap<>();
 
-        for (List<Payment> pendingPayments : groupToPendingPaymentsMap.values()) {
-            for (Payment payment : pendingPayments) {
+        for (List<Payment> payments : groupToPaymentsMap.values()) {
+            for (Payment payment : payments) {
                 if (payment.getFromUser().equals(user1) && payment.getToUser().equals(user2)) {
                     userNetBalanceMap.put(payment.getToUser(),
                             userNetBalanceMap.getOrDefault(payment.getToUser(), 0.0) + payment.getAmount());
@@ -109,18 +109,18 @@ public class DefaultBalancingStrategy implements IBalancingStrategy {
             User otherUser = entry.getKey();
             double netAmount = entry.getValue();
             if (netAmount > 0) {
-                userPendingPayments.add(new Payment(user1, otherUser, netAmount));
+                userNetPayments.add(new Payment(user1, otherUser, netAmount));
             } else if (netAmount < 0) {
-                userPendingPayments.add(new Payment(otherUser, user1, -netAmount));
+                userNetPayments.add(new Payment(otherUser, user1, -netAmount));
             }
         }
-        return userPendingPayments;
+        return userNetPayments;
     }
 
     @Override
-    public List<Payment> getAllPendingPaymentsForUserInGroup(User user, Group group) {
-        List<Payment> pendingPayments = groupToPendingPaymentsMap.getOrDefault(group.getId(), new ArrayList<>());
-        return pendingPayments.stream()
+    public List<Payment> getAllNetPaymentsForUserInGroup(User user, Group group) {
+        List<Payment> groupPayments = groupToPaymentsMap.getOrDefault(group.getId(), new ArrayList<>());
+        return groupPayments.stream()
                 .filter(payment -> payment.getFromUser().equals(user) || payment.getToUser().equals(user))
                 .collect(Collectors.toList());
     }

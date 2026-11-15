@@ -30,16 +30,16 @@ public class Main {
 
         Expense dinner = splitWiseService.createExpense("Dinner", 600.0, alice, tripGroup, List.of(alice, bob));
         System.out.println("Dinner expense created: " + dinner.getDescription());
-        System.out.println("Alice pending payments: " + splitWiseService.getPendingPaymentsForUser(alice));
+        System.out.println("Alice Net payments: " + splitWiseService.getNetPaymentsForUser(alice));
 
-        System.out.println("Alice pending payments in trip group: "
-                + splitWiseService.getPendingPaymentsForUserInGroup(alice, tripGroup));
+        System.out.println("Alice Net payments in trip group: "
+                + splitWiseService.getNetPaymentsForUserInGroup(alice, tripGroup));
 
         splitWiseService.createPayment(bob, alice, 200, tripGroup);
         System.out.println("Payment created from Bob to Alice for 200 in trip group.");
 
-        System.out.println("Alice pending payments: " + splitWiseService.getPendingPaymentsForUser(alice));
-        System.out.println("Bob pending payments: " + splitWiseService.getPendingPaymentsForUser(bob));
+        System.out.println("Alice Net payments: " + splitWiseService.getNetPaymentsForUser(alice));
+        System.out.println("Bob Net payments: " + splitWiseService.getNetPaymentsForUser(bob));
 
     }
 }

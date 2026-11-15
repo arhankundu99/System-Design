@@ -35,11 +35,11 @@ public class SplitWiseService {
         paymentService.createPayment(fromUser, toUser, amount, group);
     }
 
-    public List<Payment> getPendingPaymentsForUser(User user) {
-        return balancingStrategy.getPendingPaymentsForUser(user);
+    public List<Payment> getNetPaymentsForUser(User user) {
+        return balancingStrategy.getNetPaymentsForUser(user);
     }
 
-    public List<Payment> getPendingPaymentsForUserInGroup(User user, Group group) {
-        return balancingStrategy.getAllPendingPaymentsForUserInGroup(user, group);
+    public List<Payment> getNetPaymentsForUserInGroup(User user, Group group) {
+        return balancingStrategy.getAllNetPaymentsForUserInGroup(user, group);
     }
 }
