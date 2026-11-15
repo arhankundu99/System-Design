@@ -11,10 +11,10 @@ import models.Payment;
 import models.User;
 
 public class DefaultBalancingStrategy implements IBalancingStrategy {
-    private final Map<String, List<Payment>> groupToPendingPaymentsMap;
+    private final Map<String, List<Payment>> groupToPaymentsMap;
 
     public DefaultBalancingStrategy() {
-        this.groupToPendingPaymentsMap = new HashMap<>();
+        this.groupToPaymentsMap = new HashMap<>();
     }
 
     @Override
@@ -24,18 +24,18 @@ public class DefaultBalancingStrategy implements IBalancingStrategy {
         }
 
         String groupId = payment.getGroup().getId();
-        if (!groupToPendingPaymentsMap.containsKey(groupId)) {
-            groupToPendingPaymentsMap.put(groupId, new ArrayList<>());
+        if (!groupToPaymentsMap.containsKey(groupId)) {
+            groupToPaymentsMap.put(groupId, new ArrayList<>());
         }
 
-        List<Payment> pendingPayments = groupToPendingPaymentsMap.get(groupId);
-        if (pendingPayments.isEmpty()) {
-            pendingPayments.add(payment);
+        List<Payment> payments = groupToPaymentsMap.get(groupId);
+        if (payments.isEmpty()) {
+            payments.add(payment);
             return;
         }
 
-        for (int i = 0; i < pendingPayments.size(); i++) {
-            Payment existingPayment = pendingPayments.get(i);
+        for (int i = 0; i < payments.size(); i++) {
+            Payment existingPayment = payments.get(i);
             if (existingPayment.getFromUser().equals(payment.getToUser()) &&
                     existingPayment.getToUser().equals(payment.getFromUser())) {
                 double newAmount = existingPayment.getAmount() - payment.getAmount();
@@ -46,7 +46,7 @@ public class DefaultBalancingStrategy implements IBalancingStrategy {
                     existingPayment.setToUser(payment.getToUser());
                     existingPayment.setAmount(-newAmount);
                 } else {
-                    pendingPayments.remove(i);
+                    payments.remove(i);
                 }
                 return;
             } else if (existingPayment.getFromUser().equals(payment.getFromUser()) &&
@@ -56,7 +56,7 @@ public class DefaultBalancingStrategy implements IBalancingStrategy {
             }
         }
 
-        pendingPayments.add(payment);
+        payments.add(payment);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class ExpenseService {
             User user = entry.getKey();
             double share = entry.getValue();
             if (!user.equals(paidBy)) {
-                Payment pendingPayment = new Payment(user, paidBy, share, group);
+                Payment pendingPayment = new Payment(paidBy, user, share, group);
                 balancingStrategy.balancePayments(pendingPayment.clone());
             }
         }

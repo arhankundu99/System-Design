@@ -35,5 +35,11 @@ public class Main {
         System.out.println("Alice pending payments in trip group: "
                 + splitWiseService.getPendingPaymentsForUserInGroup(alice, tripGroup));
 
+        splitWiseService.createPayment(bob, alice, 200, tripGroup);
+        System.out.println("Payment created from Bob to Alice for 200 in trip group.");
+
+        System.out.println("Alice pending payments: " + splitWiseService.getPendingPaymentsForUser(alice));
+        System.out.println("Bob pending payments: " + splitWiseService.getPendingPaymentsForUser(bob));
+
     }
 }
